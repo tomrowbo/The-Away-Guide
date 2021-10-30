@@ -1,11 +1,11 @@
 package com.example.theawayguide
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 
 class TeamListFragment : Fragment() {
 
@@ -16,7 +16,8 @@ class TeamListFragment : Fragment() {
     private lateinit var viewModel: TeamListViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.team_list_fragment, container, false)
@@ -27,5 +28,4 @@ class TeamListFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(TeamListViewModel::class.java)
         // TODO: Use the ViewModel
     }
-
 }
