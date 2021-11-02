@@ -1,4 +1,4 @@
-package com.example.theawayguide
+package com.example.theawayguide.presentation
 
 import androidx.lifecycle.ViewModel
 
