@@ -1,4 +1,4 @@
-package com.example.theawayguide
+package com.example.theawayguide.presentation.teamlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,19 +22,24 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import coil.compose.rememberImagePainter
-import com.example.theawayguide.presentation.TeamListViewModel
 import com.example.theawayguide.ui.theme.TheAwayGuideTheme
+import com.google.firebase.database.FirebaseDatabase
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class TeamListFragment : Fragment() {
 
     companion object {
         fun newInstance() = TeamListFragment()
     }
 
-    private lateinit var viewModel: TeamListViewModel
+    val viewModel: TeamListViewModel by viewModels()
+
+    // val activityViewModel: TeamListViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -116,6 +121,17 @@ class TeamListFragment : Fragment() {
                         contentScale = ContentScale.Crop
                     )
                     Column {
+                        println("HERE 1234")
+                        val database = FirebaseDatabase.getInstance().getReference("Teams").get().addOnSuccessListener {
+                            if (it.exists()) {
+                                println("Team Name" + it.child("ManUtd").child("TeamName").value)
+                            } else {
+                                println("Error")
+                            }
+                        }.addOnFailureListener {
+                            println("Error")
+                        }
+//
                         Text(text = "Manchester United", style = MaterialTheme.typography.subtitle1)
                         Text(text = "Old Trafford")
                     }

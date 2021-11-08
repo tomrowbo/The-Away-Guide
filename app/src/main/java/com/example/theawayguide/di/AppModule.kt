@@ -1,7 +1,7 @@
 package com.example.theawayguide.di
 
 import android.content.Context
-import com.example.theawayguide.BaseApplication
+import com.example.theawayguide.presentation.BaseApplication
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

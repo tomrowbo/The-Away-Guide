@@ -1,4 +1,4 @@
-package com.example.theawayguide
+package com.example.theawayguide.presentation
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

@@ -1,17 +1,12 @@
-package com.example.theawayguide
+package com.example.theawayguide.presentation
 
 import android.os.Bundle
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.fragment.app.FragmentActivity
+import com.example.theawayguide.R
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
-
-    @Inject
-    lateinit var app: BaseApplication
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
