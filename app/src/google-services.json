@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "534907457494",
+    "firebase_url": "https://the-away-guide-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "the-away-guide",
+    "storage_bucket": "the-away-guide.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:534907457494:android:088768acbaf33c09899e77",
+        "android_client_info": {
+          "package_name": "com.example.theawayguide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "534907457494-1r8mg7di1i57l5vm128s0nvthd1rdijv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQrJyWYDutDJGx2ECuo2Wu6feUTP-Foik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "534907457494-1r8mg7di1i57l5vm128s0nvthd1rdijv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
