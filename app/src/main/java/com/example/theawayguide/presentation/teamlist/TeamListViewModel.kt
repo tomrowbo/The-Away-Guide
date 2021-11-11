@@ -1,6 +1,5 @@
 package com.example.theawayguide.presentation.teamlist
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -23,15 +22,14 @@ constructor(
     var loadingState: MutableState<Boolean> = mutableStateOf(false)
 
     init {
-            getTeams()
+        getTeams()
     }
 
     private fun getTeams() {
 
         viewModelScope.launch {
             loadingState.value = true
-            delay(5000)
-            uiModel.value = uiModel.value.copy().apply{teamList = teamRepository.getAll() ?: emptyList()}
+            uiModel.value = uiModel.value.copy().apply { teamList = teamRepository.getAll() ?: emptyList() }
             loadingState.value = false
         }
     }
