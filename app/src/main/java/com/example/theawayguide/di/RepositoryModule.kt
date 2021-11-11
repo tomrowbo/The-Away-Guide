@@ -1,7 +1,8 @@
 package com.example.theawayguide.di
 
 import com.example.theawayguide.network.FirebaseService
-import com.example.theawayguide.network.util.TeamMapper
+import com.example.theawayguide.repository.TeamRepository
+import com.example.theawayguide.repository.TeamRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,17 +11,15 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideTeamMapper(): TeamMapper {
-        return TeamMapper()
-    }
-
-    @Singleton
-    @Provides
-    fun provideFirebaseService(): FirebaseService {
-        return FirebaseService
+    fun provideTeamRepository(
+        firebaseService: FirebaseService
+    ): TeamRepository {
+        return TeamRepositoryImpl(
+            FirebaseService
+        )
     }
 }

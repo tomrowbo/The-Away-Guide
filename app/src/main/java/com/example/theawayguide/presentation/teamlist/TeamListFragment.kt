@@ -1,6 +1,7 @@
 package com.example.theawayguide.presentation.teamlist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,11 +9,15 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import coil.compose.rememberImagePainter
+import com.example.theawayguide.domain.Team
 import com.example.theawayguide.ui.theme.TheAwayGuideTheme
-import com.google.firebase.database.FirebaseDatabase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -37,7 +42,7 @@ class TeamListFragment : Fragment() {
         fun newInstance() = TeamListFragment()
     }
 
-    val viewModel: TeamListViewModel by viewModels()
+    private val viewModel: TeamListViewModel by viewModels()
 
     // val activityViewModel: TeamListViewModel by activityViewModels()
 
@@ -49,14 +54,15 @@ class TeamListFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 TheAwayGuideTheme {
-                    ListTeamsComposable()
+                    ListTeamsComposable(viewModel)
                 }
             }
         }
     }
 
     @Composable
-    fun ListTeamsComposable() {
+    fun ListTeamsComposable(viewModel: TeamListViewModel) {
+        val uiModel = viewModel.uiModel
         Surface(color = MaterialTheme.colors.background) {
             val scaffoldState = rememberScaffoldState()
             val scope = rememberCoroutineScope()
@@ -80,18 +86,25 @@ class TeamListFragment : Fragment() {
                     )
                 }
             ) {
-                ContentComposable()
+                ContentComposable(viewModel, uiModel)
             }
         }
     }
 
     @Composable
     private
-    fun ContentComposable() {
-        Column(Modifier.fillMaxWidth()) {
-            TeamCard()
-            TeamCard()
-            TeamCard()
+    fun ContentComposable(viewModel: TeamListViewModel, uiModel: MutableState<TeamListUiModel>) {
+        val teams = uiModel.value.teamList
+        val isLoading = viewModel.loadingState.value
+        Log.d("Debugging", teams.toString())
+        LazyColumn(Modifier.fillMaxWidth()) {
+            item{
+                if(isLoading)
+                CircularProgressIndicator()
+            }
+            items(teams) { team ->
+                TeamCard(team)
+            }
         }
     }
 
@@ -104,7 +117,7 @@ class TeamListFragment : Fragment() {
     }
 
     @Composable
-    fun TeamCard() {
+    fun TeamCard(team: Team) {
         Card(
             Modifier
                 .fillMaxWidth()
@@ -113,7 +126,7 @@ class TeamListFragment : Fragment() {
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
-                        painter = rememberImagePainter("https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/1200px-Manchester_United_FC_crest.svg.png"),
+                        painter = rememberImagePainter(team.badgeUrl),
                         contentDescription = null,
                         modifier = Modifier
                             .padding(16.dp)
@@ -121,19 +134,8 @@ class TeamListFragment : Fragment() {
                         contentScale = ContentScale.Crop
                     )
                     Column {
-                        println("HERE 1234")
-                        val database = FirebaseDatabase.getInstance().getReference("Teams").get().addOnSuccessListener {
-                            if (it.exists()) {
-                                println("Team Name" + it.child("ManUtd").child("TeamName").value)
-                            } else {
-                                println("Error")
-                            }
-                        }.addOnFailureListener {
-                            println("Error")
-                        }
-//
-                        Text(text = "Manchester United", style = MaterialTheme.typography.subtitle1)
-                        Text(text = "Old Trafford")
+                        Text(text = team.name ?: "", style = MaterialTheme.typography.subtitle1)
+                        Text(text = team.stadiumName ?: "")
                     }
                 }
             }
@@ -227,6 +229,8 @@ class TeamListFragment : Fragment() {
             ) {}
         }
     }
+
+
 }
 
 data class NavDrawerItem(var route: String, var icon: ImageVector, var title: String)
