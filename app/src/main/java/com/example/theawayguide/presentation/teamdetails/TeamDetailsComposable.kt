@@ -22,10 +22,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.theawayguide.domain.Team
+import com.example.theawayguide.presentation.teamlist.NavDrawerItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class TeamDetailsComposable {
+object TeamDetailsComposable {
 
     @Composable
     fun TeamDetailsScreen(viewModel: TeamDetailsViewModel) {
@@ -53,6 +54,7 @@ class TeamDetailsComposable {
                     )
                 }
             ) {
+                ContentComposable()
             }
         }
     }
@@ -66,7 +68,7 @@ class TeamDetailsComposable {
         }
     }
 
-    @Preview
+
     @Composable
     fun ContentComposable() {
         Column {
@@ -74,7 +76,8 @@ class TeamDetailsComposable {
                 painter = rememberImagePainter("https://www.stadiumjourney.com/wp-content/uploads/2016/11/Screen-Shot-2019-10-17-at-6.50.55-PM.png"),
                 contentDescription = "Stadium Image",
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.4f),
                 contentScale = ContentScale.Crop
             )
             Text("Old Trafford", style = MaterialTheme.typography.h2)
@@ -93,7 +96,7 @@ class TeamDetailsComposable {
 
         }
 
-
+    //TODO: We dont need a nav drawer in this - just a back button
     @Composable
     fun NavItemCard(item: NavDrawerItem, selected: Boolean, onItemClick: () -> Unit) {
         val background =

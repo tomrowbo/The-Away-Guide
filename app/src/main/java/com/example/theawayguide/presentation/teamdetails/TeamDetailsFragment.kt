@@ -9,7 +9,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.theawayguide.ui.theme.TheAwayGuideTheme
-//import com.example.theawayguide.presentation.teamdetails.TeamDetailsComposable.TeamDetailsScreen
+import com.example.theawayguide.presentation.teamdetails.TeamDetailsComposable.TeamDetailsScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,11 +31,9 @@ class TeamDetailsFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 TheAwayGuideTheme {
-                    //TeamDetailsScreen(viewModel)
+                    TeamDetailsScreen(viewModel)
                 }
             }
         }
     }
 }
-
-data class NavDrawerItem(var route: String, var icon: ImageVector, var title: String)

@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import com.example.theawayguide.R
 import com.example.theawayguide.ui.theme.TheAwayGuideTheme
 import com.example.theawayguide.presentation.teamlist.TeamListComposable.TeamListScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +26,7 @@ class TeamListFragment : Fragment() {
 
     // val activityViewModel: TeamListViewModel by activityViewModels()
 
+    @ExperimentalMaterialApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,7 +35,12 @@ class TeamListFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 TheAwayGuideTheme {
-                    TeamListScreen(viewModel)
+                    TeamListScreen(viewModel
+                    ) {
+                        val bundle = Bundle()
+                        bundle.putString("teamUrl", it)
+                        findNavController().navigate(R.id.viewTeam, bundle)
+                    }
                 }
             }
         }

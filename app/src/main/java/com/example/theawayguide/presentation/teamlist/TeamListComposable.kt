@@ -22,10 +22,11 @@ import com.example.theawayguide.domain.Team
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+@ExperimentalMaterialApi
 object TeamListComposable {
 
     @Composable
-    fun TeamListScreen(viewModel: TeamListViewModel) {
+    fun TeamListScreen(viewModel: TeamListViewModel, onTeamCardClicked: (String) -> Unit) {
         val uiModel = viewModel.uiModel
         Surface(color = MaterialTheme.colors.background) {
             val scaffoldState = rememberScaffoldState()
@@ -50,21 +51,25 @@ object TeamListComposable {
                     )
                 }
             ) {
-                ContentComposable(viewModel, uiModel)
+                ContentComposable(viewModel, uiModel, onTeamCardClicked)
             }
         }
     }
 
     @Composable
     private
-    fun ContentComposable(viewModel: TeamListViewModel, uiModel: MutableState<TeamListUiModel>) {
+    fun ContentComposable(
+        viewModel: TeamListViewModel,
+        uiModel: MutableState<TeamListUiModel>,
+        onTeamCardClicked: (String) -> Unit
+    ) {
         val teams = uiModel.value.teamList
         val isLoading = viewModel.loadingState.value
         if (isLoading)
             LoadingComposable()
         LazyColumn(Modifier.fillMaxSize()) {
             items(teams) { team ->
-                TeamCard(team)
+                TeamCard(team, onTeamCardClicked)
             }
         }
     }
@@ -78,11 +83,12 @@ object TeamListComposable {
     }
 
     @Composable
-    fun TeamCard(team: Team) {
+    fun TeamCard(team: Team, onTeamCardClicked: (String) -> Unit) {
         Card(
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 1.dp)
+                .padding(vertical = 1.dp),
+            onClick = { team.url?.let { onTeamCardClicked(it) } },
         ) {
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -95,8 +101,8 @@ object TeamListComposable {
                         contentScale = ContentScale.Fit
                     )
                     Column {
-                        Text(text = team.name ?: "", style = MaterialTheme.typography.subtitle1)
-                        Text(text = team.stadiumName ?: "")
+                        Text(text = team.name ?: "Team Name", style = MaterialTheme.typography.subtitle1)
+                        Text(text = team.stadiumName ?: "Stadium Name")
                     }
                 }
             }

@@ -18,14 +18,13 @@ object FirebaseService {
     }
 
     // TODO: Move to external mapper or move logic to the repository?
-    private fun mapToTeam(team: DataSnapshot): Team {
+    private fun mapToTeam(teamSnapshot: DataSnapshot): Team {
         val team = Team(
-            team.child("TeamName").value as String?,
-            team.key,
-            team.child("BadgeURL").value as String?,
-            team.child("StadiumName").value as String?,
+            teamSnapshot.child("TeamName").value as String?,
+            teamSnapshot.key,
+            teamSnapshot.child("BadgeURL").value as String?,
+            teamSnapshot.child("StadiumName").value as String?,
         )
-        Log.d("Debugging", team.toString())
         return team
     }
 }
