@@ -1,4 +1,4 @@
-package com.example.theawayguide.presentation.teamlist
+package com.example.theawayguide.presentation.teamdetails
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,23 +9,26 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.theawayguide.domain.Team
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-object TeamListComposable {
+class TeamDetailsComposable {
 
     @Composable
-    fun TeamListScreen(viewModel: TeamListViewModel) {
+    fun TeamDetailsScreen(viewModel: TeamDetailsViewModel) {
         val uiModel = viewModel.uiModel
         Surface(color = MaterialTheme.colors.background) {
             val scaffoldState = rememberScaffoldState()
@@ -37,7 +40,7 @@ object TeamListComposable {
                 },
                 topBar = {
                     TopAppBar(
-                        title = { Text(text = "All Football Teams") },
+                        title = { Text(text = "Manchester United") },
                         navigationIcon = {
                             IconButton(
                                 onClick = {
@@ -50,24 +53,10 @@ object TeamListComposable {
                     )
                 }
             ) {
-                ContentComposable(viewModel, uiModel)
             }
         }
     }
 
-    @Composable
-    private
-    fun ContentComposable(viewModel: TeamListViewModel, uiModel: MutableState<TeamListUiModel>) {
-        val teams = uiModel.value.teamList
-        val isLoading = viewModel.loadingState.value
-        if (isLoading)
-            LoadingComposable()
-        LazyColumn(Modifier.fillMaxSize()) {
-            items(teams) { team ->
-                TeamCard(team)
-            }
-        }
-    }
 
     private fun openDrawer(scope: CoroutineScope, scaffoldState: ScaffoldState) {
         scope.launch {
@@ -77,31 +66,33 @@ object TeamListComposable {
         }
     }
 
+    @Preview
     @Composable
-    fun TeamCard(team: Team) {
-        Card(
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 1.dp)
-        ) {
-            Column {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        painter = rememberImagePainter(team.badgeUrl),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .size(32.dp),
-                        contentScale = ContentScale.Fit
-                    )
-                    Column {
-                        Text(text = team.name ?: "", style = MaterialTheme.typography.subtitle1)
-                        Text(text = team.stadiumName ?: "")
-                    }
-                }
+    fun ContentComposable() {
+        Column {
+            Image(
+                painter = rememberImagePainter("https://www.stadiumjourney.com/wp-content/uploads/2016/11/Screen-Shot-2019-10-17-at-6.50.55-PM.png"),
+                contentDescription = "Stadium Image",
+                modifier = Modifier
+                    .fillMaxWidth(),
+                contentScale = ContentScale.Crop
+            )
+            Text("Old Trafford", style = MaterialTheme.typography.h2)
+            Row {
+                Icon(
+                    Icons.Filled.Place,
+                    contentDescription = "Map Icon",
+                    modifier = Modifier
+                        .height(35.dp)
+                        .width(35.dp)
+                )
+                Text("Sir Matt Busby Way, Old Trafford, Stretford, Manchester M16 0RA", style = MaterialTheme.typography.body1)
             }
+            Text("Old Trafford is a football stadium in Old Trafford, Greater Manchester, England, and the home of Manchester United. With a capacity of 74,140 seats, it is the largest club football stadium (and second-largest football stadium overall after Wembley Stadium) in the United Kingdom, and the eleventh-largest in Europe. It is about 0.5 miles (800 m) from Old Trafford Cricket Ground and the adjacent tram stop. (Wikipedia)")
         }
-    }
+
+        }
+
 
     @Composable
     fun NavItemCard(item: NavDrawerItem, selected: Boolean, onItemClick: () -> Unit) {
