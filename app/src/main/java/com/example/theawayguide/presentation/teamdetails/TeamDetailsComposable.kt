@@ -1,8 +1,6 @@
 package com.example.theawayguide.presentation.teamdetails
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -71,7 +69,8 @@ object TeamDetailsComposable {
 
     @Composable
     fun ContentComposable() {
-        Column {
+        val scrollState = rememberScrollState()
+        Column(Modifier.fillMaxSize()) {
             Image(
                 painter = rememberImagePainter("https://www.stadiumjourney.com/wp-content/uploads/2016/11/Screen-Shot-2019-10-17-at-6.50.55-PM.png"),
                 contentDescription = "Stadium Image",
@@ -80,23 +79,28 @@ object TeamDetailsComposable {
                     .fillMaxHeight(0.4f),
                 contentScale = ContentScale.Crop
             )
-            Text("Old Trafford", style = MaterialTheme.typography.h2)
-            Row {
-                Icon(
-                    Icons.Filled.Place,
-                    contentDescription = "Map Icon",
-                    modifier = Modifier
-                        .height(35.dp)
-                        .width(35.dp)
-                )
-                Text("Sir Matt Busby Way, Old Trafford, Stretford, Manchester M16 0RA", style = MaterialTheme.typography.body1)
+            Column(Modifier.padding(horizontal = 8.dp)) {
+                Text("Old Trafford", style = MaterialTheme.typography.h2)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        Icons.Filled.Place,
+                        contentDescription = "Map Icon",
+                        modifier = Modifier
+                            .height(35.dp)
+                            .width(35.dp)
+                    )
+                    Text(
+                        "Sir Matt Busby Way, Old Trafford, Stretford, Manchester M16 0RA",
+                        style = MaterialTheme.typography.body1
+                    )
+                }
+                Text("Old Trafford is a football stadium in Old Trafford, Greater Manchester, England, and the home of Manchester United. With a capacity of 74,140 seats, it is the largest club football stadium (and second-largest football stadium overall after Wembley Stadium) in the United Kingdom, and the eleventh-largest in Europe. It is about 0.5 miles (800 m) from Old Trafford Cricket Ground and the adjacent tram stop. (Wikipedia)")
             }
-            Text("Old Trafford is a football stadium in Old Trafford, Greater Manchester, England, and the home of Manchester United. With a capacity of 74,140 seats, it is the largest club football stadium (and second-largest football stadium overall after Wembley Stadium) in the United Kingdom, and the eleventh-largest in Europe. It is about 0.5 miles (800 m) from Old Trafford Cricket Ground and the adjacent tram stop. (Wikipedia)")
         }
 
         }
 
-    //TODO: We dont need a nav drawer in this - just a back button
+    //TODO: We don't need a nav drawer in this - just a back button
     @Composable
     fun NavItemCard(item: NavDrawerItem, selected: Boolean, onItemClick: () -> Unit) {
         val background =

@@ -5,5 +5,7 @@ data class Team(
     val url: String? = null,
     val badgeUrl: String? = null,
     val stadiumName: String? = null,
-
-)
+    var description: String? = null,
+    var imageUrl: String? = null,
+    var mapsLocation: String? = null,
+    )

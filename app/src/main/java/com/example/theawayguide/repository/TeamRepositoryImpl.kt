@@ -9,13 +9,15 @@ class TeamRepositoryImpl(
     private val firebaseService: FirebaseService
 ) : TeamRepository {
 
-    override suspend fun getAll(): List<Team>? {
+    override suspend fun getAll(): List<Team> {
         return withContext(Dispatchers.IO) {
             firebaseService.getAllTeams()
         }
     }
 
-    override suspend fun getByUrl(url: String): Team {
-        TODO("Not yet implemented")
+    override suspend fun getTeamDetails(url: String): Team {
+        return withContext(Dispatchers.IO) {
+            firebaseService.getTeamDetails(teamUrl = url)
+        }
     }
 }

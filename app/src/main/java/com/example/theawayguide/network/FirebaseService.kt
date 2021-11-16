@@ -1,6 +1,5 @@
 package com.example.theawayguide.network
 
-import android.util.Log
 import com.example.theawayguide.domain.Team
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.DataSnapshot
@@ -17,14 +16,29 @@ object FirebaseService {
         }
     }
 
-    // TODO: Move to external mapper or move logic to the repository?
+    fun getTeamDetails(teamUrl: String): Team {
+        val getTeamTask = DATABASE.getReference("Teams").child(teamUrl).get()
+        val getTeamFurtherInfoTask = DATABASE.getReference("TeamDetails").child(teamUrl).get()
+        Tasks.await(getTeamTask)
+        Tasks.await(getTeamFurtherInfoTask)
+        return mapToDetailedTeam(mapToTeam(getTeamTask.result), getTeamFurtherInfoTask.result)
+    }
+
     private fun mapToTeam(teamSnapshot: DataSnapshot): Team {
-        val team = Team(
-            teamSnapshot.child("TeamName").value as String?,
-            teamSnapshot.key,
-            teamSnapshot.child("BadgeURL").value as String?,
-            teamSnapshot.child("StadiumName").value as String?,
+        return Team(
+            name = teamSnapshot.child("TeamName").value as String?,
+            url = teamSnapshot.key,
+            badgeUrl = teamSnapshot.child("BadgeURL").value as String?,
+            stadiumName = teamSnapshot.child("StadiumName").value as String?,
         )
+    }
+
+    private fun mapToDetailedTeam(team: Team, teamSnapshot: DataSnapshot): Team {
+        team.apply {
+            description = teamSnapshot.child("Description").value as String?
+            imageUrl = teamSnapshot.child("ImageUrl").value as String?
+            mapsLocation = teamSnapshot.child("MapsLocation").value as String?
+        }
         return team
     }
 }

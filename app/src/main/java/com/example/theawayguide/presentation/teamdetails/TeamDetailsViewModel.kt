@@ -1,8 +1,9 @@
 package com.example.theawayguide.presentation.teamdetails
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.theawayguide.repository.TeamRepository
@@ -14,22 +15,28 @@ import javax.inject.Inject
 class TeamDetailsViewModel
 @Inject
 constructor(
-    private val teamRepository: TeamRepository
+    private val teamRepository: TeamRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     var uiModel: MutableState<TeamDetailsUiModel> = mutableStateOf(TeamDetailsUiModel())
 
     var loadingState: MutableState<Boolean> = mutableStateOf(false)
 
+
     init {
-        getTeamDetails()
+        savedStateHandle.get<String>("teamUrl")?.let{ teamUrl ->
+            Log.d("DEBUGGING", teamUrl)
+            getTeamDetails(teamUrl)
+        }
+
     }
 
-    private fun getTeamDetails() {
-
+    private fun getTeamDetails(teamUrl: String) {
         viewModelScope.launch {
             loadingState.value = true
-            //TODO: Get team details
+            uiModel.value = uiModel.value.copy().apply { team = teamRepository.getTeamDetails(teamUrl) }
+            Log.d("DEBUGGING", uiModel.value.team.toString())
             loadingState.value = false
         }
     }

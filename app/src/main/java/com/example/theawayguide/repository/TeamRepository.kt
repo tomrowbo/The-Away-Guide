@@ -6,5 +6,6 @@ interface TeamRepository {
 
     suspend fun getAll(): List<Team>?
 
-    suspend fun getByUrl(url: String): Team?
+    suspend fun getTeamDetails(url: String): Team?
+
 }
