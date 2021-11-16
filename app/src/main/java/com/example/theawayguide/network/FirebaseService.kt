@@ -36,7 +36,7 @@ object FirebaseService {
     private fun mapToDetailedTeam(team: Team, teamSnapshot: DataSnapshot): Team {
         team.apply {
             description = teamSnapshot.child("Description").value as String?
-            imageUrl = teamSnapshot.child("ImageUrl").value as String?
+            imageUrl = teamSnapshot.child("ImageURL").value as String?
             mapsLocation = teamSnapshot.child("MapsLocation").value as String?
         }
         return team

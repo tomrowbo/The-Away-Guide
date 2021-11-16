@@ -197,13 +197,14 @@ object TeamListComposable {
     }
 
     @Composable
-    fun LoadingComposable(){
+    fun LoadingComposable() {
         Column(
             Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center) {
+            verticalArrangement = Arrangement.Center
+        ) {
             CircularProgressIndicator(Modifier.size(64.dp))
-            Text("Loading...", style = MaterialTheme.typography.h3, modifier = Modifier.padding(top=8.dp))
+            Text("Loading...", style = MaterialTheme.typography.h3, modifier = Modifier.padding(top = 8.dp))
         }
     }
 }

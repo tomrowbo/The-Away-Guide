@@ -8,4 +8,4 @@ data class Team(
     var description: String? = null,
     var imageUrl: String? = null,
     var mapsLocation: String? = null,
-    )
+)

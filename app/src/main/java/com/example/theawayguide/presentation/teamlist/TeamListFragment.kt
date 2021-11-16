@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.theawayguide.R
-import com.example.theawayguide.ui.theme.TheAwayGuideTheme
 import com.example.theawayguide.presentation.teamlist.TeamListComposable.TeamListScreen
+import com.example.theawayguide.ui.theme.TheAwayGuideTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,7 +35,8 @@ class TeamListFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 TheAwayGuideTheme {
-                    TeamListScreen(viewModel
+                    TeamListScreen(
+                        viewModel
                     ) {
                         val bundle = Bundle()
                         bundle.putString("teamUrl", it)

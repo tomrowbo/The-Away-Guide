@@ -23,13 +23,11 @@ constructor(
 
     var loadingState: MutableState<Boolean> = mutableStateOf(false)
 
-
     init {
-        savedStateHandle.get<String>("teamUrl")?.let{ teamUrl ->
+        savedStateHandle.get<String>("teamUrl")?.let { teamUrl ->
             Log.d("DEBUGGING", teamUrl)
             getTeamDetails(teamUrl)
         }
-
     }
 
     private fun getTeamDetails(teamUrl: String) {
