@@ -37,7 +37,10 @@ object FirebaseService {
         team.apply {
             description = teamSnapshot.child("Description").value as String?
             imageUrl = teamSnapshot.child("ImageURL").value as String?
-            mapsLocation = teamSnapshot.child("MapsLocation").value as String?
+            val mapsLocation = teamSnapshot.child("MapsLocation").value as String?
+            val coords = mapsLocation?.split(",")
+            mapsLatitude = coords?.get(0)
+            mapsLongitude = coords?.get(1)
         }
         return team
     }

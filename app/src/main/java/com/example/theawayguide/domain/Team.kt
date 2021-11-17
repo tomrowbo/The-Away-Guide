@@ -7,5 +7,6 @@ data class Team(
     val stadiumName: String? = null,
     var description: String? = null,
     var imageUrl: String? = null,
-    var mapsLocation: String? = null,
+    var mapsLatitude: String? = null,
+    var mapsLongitude: String? = null,
 )

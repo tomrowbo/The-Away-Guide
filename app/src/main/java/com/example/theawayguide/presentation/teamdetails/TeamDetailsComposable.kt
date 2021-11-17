@@ -68,7 +68,7 @@ object TeamDetailsComposable {
             }
             when (tabIndex) {
                 0 -> OverviewTab(team.imageUrl, team.stadiumName, team.description)
-                1 -> LocationTab()
+                1 -> LocationTab(team.mapsLatitude, team.mapsLongitude)
             }
         }
     }
@@ -119,9 +119,11 @@ object TeamDetailsComposable {
     }
 
     @Composable
-    fun LocationTab() {
+    fun LocationTab(mapsLatitude: String?, mapsLongitude: String?) {
         Column {
-            MapViewComposable("53.46332134405343", "-2.2914572626499896")
+            if (mapsLatitude != null && mapsLongitude != null) {
+                MapViewComposable(mapsLatitude, mapsLongitude)
+            }
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(8.dp)) {
                 Icon(
                     Icons.Filled.Place,
@@ -131,10 +133,10 @@ object TeamDetailsComposable {
                         .width(35.dp)
                 )
                 // TODO: Get address from google maps location??
-                Text(
-                    "Sir Matt Busby Way, Old Trafford, Stretford, Manchester M16 0RA",
-                    style = MaterialTheme.typography.body1
-                )
+//                Text(
+//                    "Sir Matt Busby Way, Old Trafford, Stretford, Manchester M16 0RA",
+//                    style = MaterialTheme.typography.body1
+//                )
             }
 
         }
