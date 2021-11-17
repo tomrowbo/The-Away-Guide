@@ -63,6 +63,7 @@ object TeamListComposable {
         uiModel: MutableState<TeamListUiModel>,
         onTeamCardClicked: (String) -> Unit
     ) {
+
         val teams = uiModel.value.teamList
         val isLoading = viewModel.loadingState.value
         if (isLoading)
