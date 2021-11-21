@@ -67,7 +67,9 @@ class TeamRepositoryImpl(
             placeDTO.rating,
             placeDTO.types,
             placeDTO.geometry?.location?.lat,
-            placeDTO.geometry?.location?.lng
+            placeDTO.geometry?.location?.lng,
+            placeDTO.userRatingsTotal,
+            placeDTO.priceLevel
         )
     }
 }

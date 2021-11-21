@@ -31,6 +31,14 @@ class PlaceDTO(
     @Expose    
     val rating: Double? = null,
 
+    @SerializedName("price_level")
+    @Expose
+    val priceLevel: Int? = null,
+
+    @SerializedName("user_ratings_total")
+    @Expose
+    val userRatingsTotal: Int? = null,
+
     @SerializedName("types")    
     @Expose    
     val types: kotlin.collections.List<String>? = null,
