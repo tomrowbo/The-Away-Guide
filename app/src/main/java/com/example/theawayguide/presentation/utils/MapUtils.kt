@@ -1,8 +1,7 @@
- 
+
 package com.example.theawayguide.presentation.utils
 
 import android.os.Bundle
-import androidx.annotation.FloatRange
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
@@ -11,7 +10,6 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.example.theawayguide.R
-import com.google.android.libraries.maps.GoogleMap
 import com.google.android.libraries.maps.MapView
 
 @Composable
@@ -48,4 +46,3 @@ private fun getMapLifecycleObserver(mapView: MapView): LifecycleEventObserver =
             else -> throw IllegalStateException()
         }
     }
-

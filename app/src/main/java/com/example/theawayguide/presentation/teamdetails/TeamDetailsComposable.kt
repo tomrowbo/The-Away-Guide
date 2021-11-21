@@ -138,7 +138,6 @@ object TeamDetailsComposable {
 //                    style = MaterialTheme.typography.body1
 //                )
             }
-
         }
     }
 
@@ -168,8 +167,7 @@ object TeamDetailsComposable {
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraPosition, Zoom))
         }
         AndroidView({ map })
-        }
-
+    }
 }
 
 private const val Zoom = 15f
