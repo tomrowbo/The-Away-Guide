@@ -26,40 +26,43 @@ class TeamRepositoryImpl(
         }
     }
 
-    override suspend fun getRestaurants(latitude: Int, longitude: Int, radius: Int): List<Attraction>? {
+    override suspend fun getRestaurants(latitude: Double, longitude: Double, radius: Int): List<Attraction>? {
         return retrofitService.nearbyPlaceSearch(
-            "${latitude},${longitude}",
+            "$latitude,$longitude",
             radius,
             "restaurant",
-            BuildConfig.MAPS_API_KEY)
-            .results?.map{
-            mapToAttraction(it)
-        }
+            BuildConfig.MAPS_API_KEY
+        )
+            .results?.map {
+                mapToAttraction(it)
+            }
     }
 
-    override suspend fun getHotels(latitude: Int, longitude: Int, radius: Int): List<Attraction>?{
+    override suspend fun getHotels(latitude: Double, longitude: Double, radius: Int): List<Attraction>? {
         return retrofitService.nearbyPlaceSearch(
-            "${latitude},${longitude}",
+            "$latitude,$longitude",
             radius,
             "hotel",
-            BuildConfig.MAPS_API_KEY)
-            .results?.map{
-            mapToAttraction(it)
-        }
+            BuildConfig.MAPS_API_KEY
+        )
+            .results?.map {
+                mapToAttraction(it)
+            }
     }
 
-    override suspend fun getPubs(latitude: Int, longitude: Int, radius: Int): List<Attraction>? {
+    override suspend fun getPubs(latitude: Double, longitude: Double, radius: Int): List<Attraction>? {
         return retrofitService.nearbyPlaceSearch(
-            "${latitude},${longitude}",
+            "$latitude,$longitude",
             radius,
             "pub",
-            BuildConfig.MAPS_API_KEY)
-            .results?.map{
-            mapToAttraction(it)
-        }
+            BuildConfig.MAPS_API_KEY
+        )
+            .results?.map {
+                mapToAttraction(it)
+            }
     }
 
-    private fun mapToAttraction(placeDTO: PlaceDTO): Attraction{
+    private fun mapToAttraction(placeDTO: PlaceDTO): Attraction {
         return Attraction(
             placeDTO.name,
             placeDTO.photos?.get(0)?.photoReference,

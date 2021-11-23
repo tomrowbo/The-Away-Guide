@@ -27,8 +27,8 @@ class PlaceDTO(
     @Expose
     val geometry: GeometryDTO? = null,
 
-    @SerializedName("rating")    
-    @Expose    
+    @SerializedName("rating")
+    @Expose
     val rating: Double? = null,
 
     @SerializedName("price_level")
@@ -39,12 +39,12 @@ class PlaceDTO(
     @Expose
     val userRatingsTotal: Int? = null,
 
-    @SerializedName("types")    
-    @Expose    
+    @SerializedName("types")
+    @Expose
     val types: kotlin.collections.List<String>? = null,
 
-    @SerializedName("vicinity")    
-    @Expose    
+    @SerializedName("vicinity")
+    @Expose
     val vicinity: String? = null
 )
 
@@ -66,8 +66,8 @@ class LocationDTO(
 
 class PhotoDTO(
 
-    @SerializedName("photo_reference")    
-    @Expose    
+    @SerializedName("photo_reference")
+    @Expose
     var photoReference: String? = null
 
 )

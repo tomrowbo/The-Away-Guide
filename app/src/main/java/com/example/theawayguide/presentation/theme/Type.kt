@@ -28,6 +28,16 @@ val Typography = Typography(
         fontWeight = FontWeight.SemiBold,
         fontSize = 24.sp
     ),
+    body2 = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
+    ),
+//    h4 = TextStyle(
+//        fontFamily = FontFamily.Default,
+//        fontWeight = FontWeight.SemiBold,
+//        fontSize = 20.sp
+//    ),
     subtitle1 = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.SemiBold,

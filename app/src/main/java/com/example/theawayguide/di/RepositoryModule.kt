@@ -1,6 +1,7 @@
 package com.example.theawayguide.di
 
 import com.example.theawayguide.network.FirebaseService
+import com.example.theawayguide.network.RetrofitService
 import com.example.theawayguide.repository.TeamRepository
 import com.example.theawayguide.repository.TeamRepositoryImpl
 import dagger.Module
@@ -16,10 +17,12 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideTeamRepository(
-        firebaseService: FirebaseService
+        firebaseService: FirebaseService,
+        retrofitService: RetrofitService
     ): TeamRepository {
         return TeamRepositoryImpl(
-            FirebaseService
+            firebaseService,
+            retrofitService
         )
     }
 }

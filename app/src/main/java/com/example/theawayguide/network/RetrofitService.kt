@@ -11,5 +11,5 @@ interface RetrofitService {
         @Query("radius") radius: Int,
         @Query("type") type: String,
         @Query("key") key: String
-    ) : MapsDTO
+    ): MapsDTO
 }

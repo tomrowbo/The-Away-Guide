@@ -2,12 +2,18 @@ package com.example.theawayguide.presentation.teamdetails
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.outlined.SentimentDissatisfied
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -27,6 +33,9 @@ object TeamDetailsComposable {
         val uiModel = viewModel.uiModel
         Surface(color = MaterialTheme.colors.background) {
             val team = uiModel.value.team
+            val pubList = uiModel.value.pubList
+            val restaurantList = uiModel.value.restaurantList
+            val hotelList = uiModel.value.hotelList
             val isLoading = viewModel.loadingState.value
             if (isLoading) {
                 LoadingComposable()
@@ -35,11 +44,13 @@ object TeamDetailsComposable {
                     Scaffold(
                         topBar = {
                             TopAppBar(
-                                title = { Text(text = team.name ?: "Team Name") },
+                                title = { Text(text = team?.name ?: "Team Name") },
                             )
                         }
                     ) {
-                        ContentComposable(team)
+                        if (team != null) {
+                            ContentComposable(team, pubList, restaurantList, hotelList)
+                        }
                     }
                 }
             }
@@ -47,7 +58,12 @@ object TeamDetailsComposable {
     }
 
     @Composable
-    fun ContentComposable(team: Team) {
+    fun ContentComposable(
+        team: Team,
+        pubList: List<AttractionSummaryUiState>?,
+        restaurantList: List<AttractionSummaryUiState>?,
+        hotelList: List<AttractionSummaryUiState>?
+    ) {
         var tabIndex by remember { mutableStateOf(0) }
         val tabData = listOf(
             "OVERVIEW",
@@ -69,6 +85,72 @@ object TeamDetailsComposable {
             when (tabIndex) {
                 0 -> OverviewTab(team.imageUrl, team.stadiumName, team.description)
                 1 -> LocationTab(team.mapsLatitude, team.mapsLongitude)
+                2 -> PubsTab(pubList)
+                3 -> RestaurantsTab(restaurantList)
+                4 -> HotelsTab(hotelList)
+            }
+        }
+    }
+
+    @Composable private
+    fun HotelsTab(hotelList: List<AttractionSummaryUiState>?) {
+        LazyColumn {
+            if (hotelList != null) {
+                items(hotelList) { hotel ->
+                    AttractionSummaryComposable(
+                        name = hotel.name,
+                        imageUrl = hotel.imageUrl,
+                        icons = hotel.ratings,
+                        ratingAmount = hotel.totalRatings,
+                        shortAddress = hotel.shortAddress
+                    )
+                }
+            } else{
+                item {
+                    ErrorComposable("Could not load...")
+                }
+            }
+        }
+    }
+
+    @Composable private
+    fun RestaurantsTab(restaurantList: List<AttractionSummaryUiState>?) {
+        LazyColumn {
+            if (restaurantList != null) {
+                items(restaurantList) { restaurant ->
+                    AttractionSummaryComposable(
+                        name = restaurant.name,
+                        imageUrl = restaurant.imageUrl,
+                        icons = restaurant.ratings,
+                        ratingAmount = restaurant.totalRatings,
+                        shortAddress = restaurant.shortAddress
+                    )
+                }
+            } else{
+                item {
+                    ErrorComposable("Could not load...")
+                }
+            }
+        }
+    }
+
+    @Composable private
+    fun PubsTab(pubList: List<AttractionSummaryUiState>?) {
+        LazyColumn {
+            if (pubList != null) {
+                items(pubList) { pub ->
+                    AttractionSummaryComposable(
+                        name = pub.name,
+                        imageUrl = pub.imageUrl,
+                        icons = pub.ratings,
+                        ratingAmount = pub.totalRatings,
+                        shortAddress = pub.shortAddress
+                    )
+                }
+            } else{
+                item {
+                    ErrorComposable("Could not load...")
+                }
             }
         }
     }
@@ -84,6 +166,23 @@ object TeamDetailsComposable {
             CircularProgressIndicator(Modifier.size(64.dp))
             Text(
                 "Loading...",
+                style = MaterialTheme.typography.h3,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
+    }
+
+    // TODO: Make a common component class so this doesn't need to be repeated
+    @Composable
+    fun ErrorComposable(errorMsg: String) {
+        Column(
+            Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(Icons.Outlined.SentimentDissatisfied, "Sad face", Modifier.size(64.dp))
+            Text(
+                errorMsg,
                 style = MaterialTheme.typography.h3,
                 modifier = Modifier.padding(top = 8.dp)
             )
@@ -119,7 +218,7 @@ object TeamDetailsComposable {
     }
 
     @Composable
-    fun LocationTab(mapsLatitude: String?, mapsLongitude: String?) {
+    fun LocationTab(mapsLatitude: Double?, mapsLongitude: Double?) {
         Column {
             if (mapsLatitude != null && mapsLongitude != null) {
                 MapViewComposable(mapsLatitude, mapsLongitude)
@@ -142,7 +241,7 @@ object TeamDetailsComposable {
     }
 
     @Composable
-    private fun MapViewComposable(latitude: String, longitude: String) {
+    private fun MapViewComposable(latitude: Double, longitude: Double) {
         // The MapView lifecycle is handled by this composable. As the MapView also needs to be updated
         // with input from Compose UI, those updates are encapsulated into the MapViewContainer
         // composable. In this way, when an update to the MapView happens, this composable won't
@@ -154,11 +253,11 @@ object TeamDetailsComposable {
     @Composable
     private fun MapViewContainer(
         map: MapView,
-        latitude: String,
-        longitude: String
+        latitude: Double,
+        longitude: Double
     ) {
         val cameraPosition = remember(latitude, longitude) {
-            LatLng(latitude.toDouble(), longitude.toDouble())
+            LatLng(latitude, longitude)
         }
 
         LaunchedEffect(map) {
@@ -167,6 +266,71 @@ object TeamDetailsComposable {
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraPosition, Zoom))
         }
         AndroidView({ map })
+    }
+
+    @Composable
+    fun AttractionSummaryComposable(name: String?, imageUrl: String?, icons: List<ImageVector>?, ratingAmount: Int?, shortAddress: String?) {
+        Card(Modifier.padding(4.dp)) {
+            Column {
+                Image(
+                    painter = rememberImagePainter(imageUrl),
+                    contentDescription = "Attraction Image",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1.85f),
+                    contentScale = ContentScale.Crop
+                )
+                Column(Modifier.padding(4.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(name ?: "Attraction Name",
+                            style = MaterialTheme.typography.subtitle1,
+                            modifier = Modifier.weight(1f, fill= false))
+                        icons?.let {
+                            Row {
+                                Icon(
+                                    imageVector = icons[0],
+                                    contentDescription = "Star",
+                                    Modifier.size(16.dp)
+                                )
+                                Icon(
+                                    imageVector = icons[1],
+                                    contentDescription = "Star",
+                                    Modifier.size(16.dp)
+                                )
+                                Icon(
+                                    imageVector = icons[2],
+                                    contentDescription = "Star",
+                                    Modifier.size(16.dp)
+                                )
+                                Icon(
+                                    imageVector = icons[3],
+                                    contentDescription = "Star",
+                                    Modifier.size(16.dp)
+                                )
+                                Icon(
+                                    imageVector = icons[4],
+                                    contentDescription = "Star",
+                                    Modifier.size(16.dp)
+                                )
+                                Text(
+                                    text = "($ratingAmount)",
+                                    style = MaterialTheme.typography.body2,
+                                    modifier = Modifier.padding(start = 4.dp)
+                                )
+                            }
+                        }
+                    }
+                    Text(
+                        text = shortAddress ?: "",
+                        style = MaterialTheme.typography.body1,
+                    )
+                }
+            }
+        }
     }
 }
 
