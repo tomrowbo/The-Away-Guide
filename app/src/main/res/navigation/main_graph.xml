@@ -8,6 +8,15 @@
         android:id="@+id/TeamListFragment"
         android:name="com.example.theawayguide.presentation.teamlist.TeamListFragment"
         android:label="TeamListFragment">
+    <action
+        android:id="@+id/viewTeam"
+        app:destination="@id/TeamDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/TeamDetailsFragment"
+        android:name="com.example.theawayguide.presentation.teamdetails.TeamDetailsFragment"
+        android:label="TeamDetailsFragment">
     </fragment>
 
 </navigation>
