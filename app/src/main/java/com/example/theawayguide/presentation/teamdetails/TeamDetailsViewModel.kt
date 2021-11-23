@@ -23,7 +23,7 @@ class TeamDetailsViewModel
 @Inject
 constructor(
     private val teamRepository: TeamRepository,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     var uiState: MutableState<TeamDetailsUiState> = mutableStateOf(TeamDetailsUiState())
@@ -81,24 +81,24 @@ constructor(
 
     private fun mapToAttractionUiModel(attraction: Attraction): AttractionSummaryUiState {
         var ratingIcons: ArrayList<ImageVector>? = null
-            if (attraction.rating != null) {
-                val rating = attraction.rating
-                ratingIcons = ArrayList()
-                for (i in 1..5) {
-                    ratingIcons.add(
-                        when {
-                            rating >= i -> Icons.Outlined.Star
-                            else -> Icons.Outlined.StarBorder
-                        }
-                    )
-                }
+        if (attraction.rating != null) {
+            val rating = attraction.rating
+            ratingIcons = ArrayList()
+            for (i in 1..5) {
+                ratingIcons.add(
+                    when {
+                        rating >= i -> Icons.Outlined.Star
+                        else -> Icons.Outlined.StarBorder
+                    }
+                )
             }
+        }
         return AttractionSummaryUiState(
             attraction.name ?: "",
             "https://maps.googleapis.com/maps/api/place/" +
-            "photo?maxwidth=3840&" +
-            "photo_reference=${attraction.imageUrl}" +
-            "&key=${BuildConfig.MAPS_API_KEY}" ?: "",
+                "photo?maxwidth=3840&" +
+                "photo_reference=${attraction.imageUrl}" +
+                "&key=${BuildConfig.MAPS_API_KEY}" ?: "",
             ratingIcons,
             attraction.totalRatings ?: -1,
             attraction.address
