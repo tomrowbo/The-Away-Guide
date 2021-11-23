@@ -8,8 +8,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.outlined.SentimentDissatisfied
-import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +28,7 @@ object TeamDetailsComposable {
 
     @Composable
     fun TeamDetailsScreen(viewModel: TeamDetailsViewModel) {
-        val uiModel = viewModel.uiModel
+        val uiModel = viewModel.uiState
         Surface(color = MaterialTheme.colors.background) {
             val team = uiModel.value.team
             val pubList = uiModel.value.pubList

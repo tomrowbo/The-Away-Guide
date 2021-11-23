@@ -26,7 +26,7 @@ constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    var uiModel: MutableState<TeamDetailsUiModel> = mutableStateOf(TeamDetailsUiModel())
+    var uiState: MutableState<TeamDetailsUiState> = mutableStateOf(TeamDetailsUiState())
 
     var loadingState: MutableState<Boolean> = mutableStateOf(false)
 
@@ -40,9 +40,9 @@ constructor(
         viewModelScope.launch {
             loadingState.value = true
 
-            uiModel.value.team = teamRepository.getTeamDetails(teamUrl)
+            uiState.value.team = teamRepository.getTeamDetails(teamUrl)
 
-            uiModel.value.team?.let {
+            uiState.value.team?.let {
                 if (it.mapsLatitude != null && it.mapsLongitude != null) {
                     getAttractions(it.mapsLatitude, it.mapsLongitude, RADIUS)
                 }
@@ -53,7 +53,7 @@ constructor(
     }
 
     private suspend fun getAttractions(latitude: Double, longitude: Double, radius: Int) {
-        uiModel.value.hotelList =
+        uiState.value.hotelList =
             teamRepository.getHotels(
                 latitude,
                 longitude,
@@ -62,7 +62,7 @@ constructor(
                 mapToAttractionUiModel(attraction)
             }
 
-        uiModel.value.pubList = teamRepository.getPubs(
+        uiState.value.pubList = teamRepository.getPubs(
             latitude,
             longitude,
             radius
@@ -70,7 +70,7 @@ constructor(
             mapToAttractionUiModel(attraction)
         }
 
-        uiModel.value.restaurantList = teamRepository.getRestaurants(
+        uiState.value.restaurantList = teamRepository.getRestaurants(
             latitude,
             longitude,
             radius
@@ -80,16 +80,19 @@ constructor(
     }
 
     private fun mapToAttractionUiModel(attraction: Attraction): AttractionSummaryUiState {
-        val rating = attraction.rating ?: 0.0
-        val ratingIcons = ArrayList<ImageVector>()
-        for (i in 1..5) {
-            ratingIcons.add(
-                when {
-                    rating >= i -> Icons.Outlined.Star
-                    else -> Icons.Outlined.StarBorder
+        var ratingIcons: ArrayList<ImageVector>? = null
+            if (attraction.rating != null) {
+                val rating = attraction.rating
+                ratingIcons = ArrayList()
+                for (i in 1..5) {
+                    ratingIcons.add(
+                        when {
+                            rating >= i -> Icons.Outlined.Star
+                            else -> Icons.Outlined.StarBorder
+                        }
+                    )
                 }
-            )
-        }
+            }
         return AttractionSummaryUiState(
             attraction.name ?: "",
             "https://maps.googleapis.com/maps/api/place/" +

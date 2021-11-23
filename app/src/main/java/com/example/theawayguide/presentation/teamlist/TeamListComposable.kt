@@ -27,7 +27,7 @@ object TeamListComposable {
 
     @Composable
     fun TeamListScreen(viewModel: TeamListViewModel, onTeamCardClicked: (String) -> Unit) {
-        val uiModel = viewModel.uiModel
+        val uiModel = viewModel.uiState
         Surface(color = MaterialTheme.colors.background) {
             val scaffoldState = rememberScaffoldState()
             val scope = rememberCoroutineScope()
@@ -60,11 +60,11 @@ object TeamListComposable {
     private
     fun ContentComposable(
         viewModel: TeamListViewModel,
-        uiModel: MutableState<TeamListUiModel>,
+        uiState: MutableState<TeamListUiState>,
         onTeamCardClicked: (String) -> Unit
     ) {
 
-        val teams = uiModel.value.teamList
+        val teams = uiState.value.teamList
         val isLoading = viewModel.loadingState.value
         if (isLoading)
             LoadingComposable()
