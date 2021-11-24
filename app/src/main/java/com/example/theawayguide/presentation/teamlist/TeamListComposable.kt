@@ -15,10 +15,15 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
+import com.example.theawayguide.R
 import com.example.theawayguide.domain.Team
+import com.example.theawayguide.presentation.common.SplashScreenComposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -26,32 +31,41 @@ import kotlinx.coroutines.launch
 object TeamListComposable {
 
     @Composable
-    fun TeamListScreen(viewModel: TeamListViewModel, onTeamCardClicked: (String) -> Unit) {
-        val uiModel = viewModel.uiModel
-        Surface(color = MaterialTheme.colors.background) {
-            val scaffoldState = rememberScaffoldState()
-            val scope = rememberCoroutineScope()
-            Scaffold(
-                scaffoldState = scaffoldState,
-                drawerContent = {
-                    DrawerComposable()
-                },
-                topBar = {
-                    TopAppBar(
-                        title = { Text(text = "All Football Teams") },
-                        navigationIcon = {
-                            IconButton(
-                                onClick = {
-                                    openDrawer(scope, scaffoldState)
+    fun TeamListScreen(viewModel: TeamListViewModel, navController: NavController) {
+        val uiModel = viewModel.uiState
+        val isLoading = viewModel.loadingState.value
+        if (isLoading) {
+            SplashScreenComposable()
+        }
+        else {
+            Surface(color = MaterialTheme.colors.background) {
+                val scaffoldState = rememberScaffoldState()
+                val scope = rememberCoroutineScope()
+                Scaffold(
+                    scaffoldState = scaffoldState,
+                    drawerContent = {
+                        DrawerComposable()
+                    },
+                    topBar = {
+                        TopAppBar(
+                            title = { Text(text = stringResource(R.string.all_teams_title_text)) },
+                            navigationIcon = {
+                                IconButton(
+                                    onClick = {
+                                        openDrawer(scope, scaffoldState)
+                                    }
+                                ) {
+                                    Icon(
+                                        Icons.Filled.Menu,
+                                        contentDescription = stringResource(R.string.menu_button_description)
+                                    )
                                 }
-                            ) {
-                                Icon(Icons.Filled.Menu, contentDescription = "Menu Button")
                             }
-                        }
-                    )
+                        )
+                    }
+                ) {
+                    ContentComposable(uiModel, navController)
                 }
-            ) {
-                ContentComposable(viewModel, uiModel, onTeamCardClicked)
             }
         }
     }
@@ -59,18 +73,14 @@ object TeamListComposable {
     @Composable
     private
     fun ContentComposable(
-        viewModel: TeamListViewModel,
-        uiModel: MutableState<TeamListUiModel>,
-        onTeamCardClicked: (String) -> Unit
+        uiState: MutableState<TeamListUiState>,
+        navController: NavController
     ) {
 
-        val teams = uiModel.value.teamList
-        val isLoading = viewModel.loadingState.value
-        if (isLoading)
-            LoadingComposable()
+        val teams = uiState.value.teamList
         LazyColumn(Modifier.fillMaxSize()) {
             items(teams) { team ->
-                TeamCard(team, onTeamCardClicked)
+                TeamCard(team, navController)
             }
         }
     }
@@ -84,12 +94,12 @@ object TeamListComposable {
     }
 
     @Composable
-    fun TeamCard(team: Team, onTeamCardClicked: (String) -> Unit) {
+    fun TeamCard(team: Team, navController: NavController) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 1.dp),
-            onClick = { team.url?.let { onTeamCardClicked(it) } },
+            onClick = { team.url?.let { navController.navigate("teamDetails/${team.url}") } },
         ) {
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -102,8 +112,14 @@ object TeamListComposable {
                         contentScale = ContentScale.Fit
                     )
                     Column {
-                        Text(text = team.name ?: "Team Name", style = MaterialTheme.typography.subtitle1)
-                        Text(text = team.stadiumName ?: "Stadium Name")
+                        Text(
+                            text = team.name ?: stringResource(R.string.team_name_placeholder_text),
+                            style = MaterialTheme.typography.subtitle1
+                        )
+                        Text(
+                            text = team.stadiumName
+                                ?: stringResource(R.string.stadium_name_placeholder_text)
+                        )
                     }
                 }
             }
@@ -152,9 +168,9 @@ object TeamListComposable {
             }
             NavItemCard(
                 NavDrawerItem(
-                    "All Football Teams",
+                    stringResource(R.string.all_teams_title_text),
                     Icons.Filled.Menu,
-                    "All Football Teams"
+                    stringResource(R.string.all_teams_title_text)
                 ),
                 selected = false
             ) {}
@@ -191,21 +207,14 @@ object TeamListComposable {
                 selected = false
             ) {}
             NavItemCard(
-                NavDrawerItem("Settings", Icons.Filled.Settings, "Settings"),
+                NavDrawerItem(
+                    stringResource(R.string.settings_title_text),
+                    Icons.Filled.Settings,
+                    stringResource(R.string.settings_title_text)
+                ),
                 selected = false
             ) {}
         }
     }
-
-    @Composable
-    fun LoadingComposable() {
-        Column(
-            Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            CircularProgressIndicator(Modifier.size(64.dp))
-            Text("Loading...", style = MaterialTheme.typography.h3, modifier = Modifier.padding(top = 8.dp))
-        }
-    }
 }
+data class NavDrawerItem(var route: String, var icon: ImageVector, var title: String)

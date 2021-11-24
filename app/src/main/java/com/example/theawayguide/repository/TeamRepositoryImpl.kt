@@ -35,31 +35,31 @@ class TeamRepositoryImpl(
         )
             .results?.map {
                 mapToAttraction(it)
-            }
+            }?.reversed()
     }
 
     override suspend fun getHotels(latitude: Double, longitude: Double, radius: Int): List<Attraction>? {
         return retrofitService.nearbyPlaceSearch(
             "$latitude,$longitude",
             radius,
-            "hotel",
+            "lodging",
             BuildConfig.MAPS_API_KEY
         )
             .results?.map {
                 mapToAttraction(it)
-            }
+            }?.reversed()
     }
 
     override suspend fun getPubs(latitude: Double, longitude: Double, radius: Int): List<Attraction>? {
         return retrofitService.nearbyPlaceSearch(
             "$latitude,$longitude",
             radius,
-            "pub",
+            "bar",
             BuildConfig.MAPS_API_KEY
         )
             .results?.map {
                 mapToAttraction(it)
-            }
+            }?.reversed()
     }
 
     private fun mapToAttraction(placeDTO: PlaceDTO): Attraction {

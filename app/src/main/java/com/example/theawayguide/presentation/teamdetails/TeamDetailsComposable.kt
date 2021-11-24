@@ -7,18 +7,20 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
-import androidx.compose.material.icons.outlined.SentimentDissatisfied
-import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
+import com.example.theawayguide.R
 import com.example.theawayguide.domain.Team
+import com.example.theawayguide.presentation.common.ErrorComposable
+import com.example.theawayguide.presentation.common.LoadingComposable
 import com.example.theawayguide.presentation.utils.rememberMapViewWithLifecycle
 import com.google.android.libraries.maps.CameraUpdateFactory
 import com.google.android.libraries.maps.MapView
@@ -29,29 +31,29 @@ import com.google.maps.android.ktx.awaitMap
 object TeamDetailsComposable {
 
     @Composable
-    fun TeamDetailsScreen(viewModel: TeamDetailsViewModel) {
-        val uiModel = viewModel.uiModel
+    fun TeamDetailsScreen(viewModel: TeamDetailsViewModel, navController: NavController) {
+        val uiModel = viewModel.uiState
         Surface(color = MaterialTheme.colors.background) {
             val team = uiModel.value.team
             val pubList = uiModel.value.pubList
             val restaurantList = uiModel.value.restaurantList
             val hotelList = uiModel.value.hotelList
-            val isLoading = viewModel.loadingState.value
-            if (isLoading) {
-                LoadingComposable()
-            } else {
-                Surface(color = MaterialTheme.colors.background) {
-                    Scaffold(
-                        topBar = {
-                            TopAppBar(
-                                title = { Text(text = team?.name ?: "Team Name") },
-                            )
-                        }
-                    ) {
-                        if (team != null) {
-                            ContentComposable(team, pubList, restaurantList, hotelList)
-                        }
+            Surface(color = MaterialTheme.colors.background) {
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = { Text(text = team?.name ?: stringResource(R.string.team_name_placeholder_text)) },
+                        )
                     }
+                ) {
+                    if (team != null) {
+                        val isLoading = viewModel.loadingState.value
+                        if (isLoading)
+                            LoadingComposable()
+                        else
+                            ContentComposable(team, pubList, restaurantList, hotelList)
+                    } else
+                        ErrorComposable(errorMsg = "Team not found")
                 }
             }
         }
@@ -66,11 +68,11 @@ object TeamDetailsComposable {
     ) {
         var tabIndex by remember { mutableStateOf(0) }
         val tabData = listOf(
-            "OVERVIEW",
-            "LOCATION",
-            "PUBS",
-            "RESTAURANTS",
-            "HOTELS"
+            stringResource(R.string.overview_tab_text),
+            stringResource(R.string.location_tab_text),
+            stringResource(R.string.pubs_tab_text),
+            stringResource(R.string.restaurant_tab_text),
+            stringResource(R.string.hotel_tab_text)
         )
         Column {
             ScrollableTabRow(selectedTabIndex = tabIndex, edgePadding = 0.dp) {
@@ -105,9 +107,9 @@ object TeamDetailsComposable {
                         shortAddress = hotel.shortAddress
                     )
                 }
-            } else{
+            } else {
                 item {
-                    ErrorComposable("Could not load...")
+                    ErrorComposable(stringResource(R.string.could_not_load_text))
                 }
             }
         }
@@ -126,9 +128,9 @@ object TeamDetailsComposable {
                         shortAddress = restaurant.shortAddress
                     )
                 }
-            } else{
+            } else {
                 item {
-                    ErrorComposable("Could not load...")
+                    ErrorComposable(stringResource(R.string.could_not_load_text))
                 }
             }
         }
@@ -147,45 +149,11 @@ object TeamDetailsComposable {
                         shortAddress = pub.shortAddress
                     )
                 }
-            } else{
+            } else {
                 item {
-                    ErrorComposable("Could not load...")
+                    ErrorComposable(stringResource(R.string.could_not_load_text))
                 }
             }
-        }
-    }
-
-    // TODO: Make a common component class so this doesn't need to be repeated
-    @Composable
-    fun LoadingComposable() {
-        Column(
-            Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            CircularProgressIndicator(Modifier.size(64.dp))
-            Text(
-                "Loading...",
-                style = MaterialTheme.typography.h3,
-                modifier = Modifier.padding(top = 8.dp)
-            )
-        }
-    }
-
-    // TODO: Make a common component class so this doesn't need to be repeated
-    @Composable
-    fun ErrorComposable(errorMsg: String) {
-        Column(
-            Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Icon(Icons.Outlined.SentimentDissatisfied, "Sad face", Modifier.size(64.dp))
-            Text(
-                errorMsg,
-                style = MaterialTheme.typography.h3,
-                modifier = Modifier.padding(top = 8.dp)
-            )
         }
     }
 
@@ -286,9 +254,11 @@ object TeamDetailsComposable {
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(name ?: "Attraction Name",
+                        Text(
+                            name ?: "Attraction Name",
                             style = MaterialTheme.typography.subtitle1,
-                            modifier = Modifier.weight(1f, fill= false))
+                            modifier = Modifier.weight(1f, fill = false)
+                        )
                         icons?.let {
                             Row {
                                 Icon(

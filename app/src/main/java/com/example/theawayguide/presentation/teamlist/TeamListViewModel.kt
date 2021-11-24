@@ -2,7 +2,6 @@ package com.example.theawayguide.presentation.teamlist
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.theawayguide.repository.TeamRepository
@@ -17,7 +16,7 @@ constructor(
     private val teamRepository: TeamRepository
 ) : ViewModel() {
 
-    var uiModel: MutableState<TeamListUiModel> = mutableStateOf(TeamListUiModel())
+    var uiState: MutableState<TeamListUiState> = mutableStateOf(TeamListUiState())
 
     var loadingState: MutableState<Boolean> = mutableStateOf(false)
 
@@ -29,7 +28,7 @@ constructor(
 
         viewModelScope.launch {
             loadingState.value = true
-            uiModel.value = uiModel.value.copy().apply { teamList = teamRepository.getAll() ?: emptyList() }
+            uiState.value = uiState.value.copy().apply { teamList = teamRepository.getAll() ?: emptyList() }
             loadingState.value = false
         }
     }
