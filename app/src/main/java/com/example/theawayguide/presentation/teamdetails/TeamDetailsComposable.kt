@@ -42,18 +42,24 @@ object TeamDetailsComposable {
                 Scaffold(
                     topBar = {
                         TopAppBar(
-                            title = { Text(text = team?.name ?: stringResource(R.string.team_name_placeholder_text)) },
+                            title = {
+                                Text(
+                                    text = team?.name
+                                        ?: stringResource(R.string.team_name_placeholder_text)
+                                )
+                            },
                         )
                     }
                 ) {
-                    if (team != null) {
-                        val isLoading = viewModel.loadingState.value
-                        if (isLoading)
-                            LoadingComposable()
-                        else
+                    val isLoading = viewModel.loadingState.value
+                    if (isLoading) {
+                        LoadingComposable()
+                    } else {
+                        if (team != null) {
                             ContentComposable(team, pubList, restaurantList, hotelList)
-                    } else
-                        ErrorComposable(errorMsg = "Team not found")
+                        } else
+                            ErrorComposable(errorMsg = "Team not found")
+                    }
                 }
             }
         }

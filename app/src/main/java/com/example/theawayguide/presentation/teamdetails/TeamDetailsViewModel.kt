@@ -32,48 +32,62 @@ constructor(
 
     init {
         savedStateHandle.get<String>("teamUrl")?.let { teamUrl ->
-            getTeamDetails(teamUrl)
+            getScreenInfo(teamUrl)
         }
     }
 
-    private fun getTeamDetails(teamUrl: String) {
+    private fun getScreenInfo(teamUrl: String) {
         viewModelScope.launch {
             loadingState.value = true
 
-            uiState.value.team = teamRepository.getTeamDetails(teamUrl)
+            val team = teamRepository.getTeamDetails(teamUrl)
+            var pubList: List<AttractionSummaryUiState>? = null
+            var restaurantList: List<AttractionSummaryUiState>? = null
+            var hotelList: List<AttractionSummaryUiState>? = null
 
-            uiState.value.team?.let {
-                if (it.mapsLatitude != null && it.mapsLongitude != null) {
-                    getAttractions(it.mapsLatitude, it.mapsLongitude, RADIUS)
-                }
+            if (team.mapsLatitude != null && team.mapsLongitude != null) {
+                hotelList = getHotels(team.mapsLatitude, team.mapsLongitude)
+                pubList = getPubs(team.mapsLatitude, team.mapsLongitude)
+                restaurantList = getRestaurants(team.mapsLatitude, team.mapsLongitude)
             }
+
+            uiState.value = TeamDetailsUiState(
+                team = team,
+                pubList = pubList,
+                hotelList = hotelList,
+                restaurantList = restaurantList
+            )
 
             loadingState.value = false
         }
     }
 
-    private suspend fun getAttractions(latitude: Double, longitude: Double, radius: Int) {
-        uiState.value.hotelList =
-            teamRepository.getHotels(
-                latitude,
-                longitude,
-                radius
-            )?.map { attraction ->
-                mapToAttractionUiModel(attraction)
-            }
-
-        uiState.value.pubList = teamRepository.getPubs(
-            latitude,
-            longitude,
-            radius
+    private suspend fun getHotels(mapsLatitude: Double, mapsLongitude: Double): List<AttractionSummaryUiState>? {
+        return teamRepository.getHotels(
+            mapsLatitude,
+            mapsLongitude,
+            RADIUS
         )?.map { attraction ->
             mapToAttractionUiModel(attraction)
         }
+    }
 
-        uiState.value.restaurantList = teamRepository.getRestaurants(
-            latitude,
-            longitude,
-            radius
+
+    private suspend fun getPubs(mapsLatitude: Double, mapsLongitude: Double): List<AttractionSummaryUiState>? {
+        return teamRepository.getPubs(
+            mapsLatitude,
+            mapsLongitude,
+            RADIUS
+        )?.map { attraction ->
+            mapToAttractionUiModel(attraction)
+        }
+    }
+
+    private suspend fun getRestaurants(mapsLatitude: Double, mapsLongitude: Double): List<AttractionSummaryUiState>? {
+        return teamRepository.getRestaurants(
+            mapsLatitude,
+            mapsLongitude,
+            RADIUS
         )?.map { attraction ->
             mapToAttractionUiModel(attraction)
         }

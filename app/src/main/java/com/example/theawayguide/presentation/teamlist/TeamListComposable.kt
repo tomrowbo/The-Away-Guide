@@ -36,8 +36,7 @@ object TeamListComposable {
         val isLoading = viewModel.loadingState.value
         if (isLoading) {
             SplashScreenComposable()
-        }
-        else {
+        } else {
             Surface(color = MaterialTheme.colors.background) {
                 val scaffoldState = rememberScaffoldState()
                 val scope = rememberCoroutineScope()
