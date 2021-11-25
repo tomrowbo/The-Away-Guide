@@ -21,6 +21,7 @@ import com.example.theawayguide.R
 import com.example.theawayguide.domain.Team
 import com.example.theawayguide.presentation.common.ErrorComposable
 import com.example.theawayguide.presentation.common.LoadingComposable
+import com.example.theawayguide.presentation.common.RatingComposable
 import com.example.theawayguide.presentation.utils.rememberMapViewWithLifecycle
 import com.google.android.libraries.maps.CameraUpdateFactory
 import com.google.android.libraries.maps.MapView
@@ -183,7 +184,7 @@ object TeamDetailsComposable {
 
             Column(
                 Modifier.padding(horizontal = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 Text(stadiumName ?: "Stadium Name", style = MaterialTheme.typography.h2)
                 Text(description ?: "Description")
@@ -266,38 +267,7 @@ object TeamDetailsComposable {
                             modifier = Modifier.weight(1f, fill = false)
                         )
                         icons?.let {
-                            Row {
-                                Icon(
-                                    imageVector = icons[0],
-                                    contentDescription = "Star",
-                                    Modifier.size(16.dp)
-                                )
-                                Icon(
-                                    imageVector = icons[1],
-                                    contentDescription = "Star",
-                                    Modifier.size(16.dp)
-                                )
-                                Icon(
-                                    imageVector = icons[2],
-                                    contentDescription = "Star",
-                                    Modifier.size(16.dp)
-                                )
-                                Icon(
-                                    imageVector = icons[3],
-                                    contentDescription = "Star",
-                                    Modifier.size(16.dp)
-                                )
-                                Icon(
-                                    imageVector = icons[4],
-                                    contentDescription = "Star",
-                                    Modifier.size(16.dp)
-                                )
-                                Text(
-                                    text = "($ratingAmount)",
-                                    style = MaterialTheme.typography.body2,
-                                    modifier = Modifier.padding(start = 4.dp)
-                                )
-                            }
+                            RatingComposable(icons, ratingAmount)
                         }
                     }
                     Text(

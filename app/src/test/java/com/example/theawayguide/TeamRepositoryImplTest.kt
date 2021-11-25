@@ -53,20 +53,20 @@ class TeamRepositoryImplTest {
                 PlaceDTO(
                     name = PLACE_NAME,
                     photos = listOf(PhotoDTO(PHOTO_REFERENCE)),
-                    geometry = GeometryDTO(LocationDTO(lat = 1.0, lng = 2.0)),
-                    rating = 3.0,
-                    priceLevel = 1,
-                    userRatingsTotal = 465,
+                    geometry = GeometryDTO(LocationDTO(lat = LATITUDE, lng = LONGITUDE)),
+                    rating = RATING,
+                    priceLevel = PRICE_LEVEL,
+                    userRatingsTotal = TOTAL_RATINGS,
                     types = emptyList(),
                     vicinity = VICINITY
                 ),
                 PlaceDTO(
                     name = PLACE_NAME2,
                     photos = listOf(PhotoDTO(PHOTO_REFERENCE)),
-                    geometry = GeometryDTO(LocationDTO(lat = 1.0, lng = 2.0)),
-                    rating = 3.0,
-                    priceLevel = 1,
-                    userRatingsTotal = 465,
+                    geometry = GeometryDTO(LocationDTO(lat = LATITUDE, lng = LONGITUDE)),
+                    rating = RATING,
+                    priceLevel = PRICE_LEVEL,
+                    userRatingsTotal = TOTAL_RATINGS,
                     types = emptyList(),
                     vicinity = VICINITY
                 )
