@@ -72,7 +72,6 @@ constructor(
         }
     }
 
-
     private suspend fun getPubs(mapsLatitude: Double, mapsLongitude: Double): List<AttractionSummaryUiState>? {
         return teamRepository.getPubs(
             mapsLatitude,

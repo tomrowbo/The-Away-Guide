@@ -6,6 +6,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
 
 object FirebaseService {
+
     private val DATABASE = FirebaseDatabase.getInstance()
 
     fun getAllTeams(): List<Team> {
