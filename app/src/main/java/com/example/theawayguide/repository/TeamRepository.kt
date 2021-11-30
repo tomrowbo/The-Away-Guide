@@ -14,4 +14,6 @@ interface TeamRepository {
     suspend fun getHotels(latitude: Double, longitude: Double, radius: Int): List<Attraction>?
 
     suspend fun getPubs(latitude: Double, longitude: Double, radius: Int): List<Attraction>?
+
+    suspend fun getAttractionDetails(placeId: String): Attraction?
 }

@@ -21,6 +21,7 @@ import com.example.theawayguide.R
 import com.example.theawayguide.domain.Team
 import com.example.theawayguide.presentation.common.ErrorComposable
 import com.example.theawayguide.presentation.common.LoadingComposable
+import com.example.theawayguide.presentation.common.RatingComposable
 import com.example.theawayguide.presentation.utils.rememberMapViewWithLifecycle
 import com.google.android.libraries.maps.CameraUpdateFactory
 import com.google.android.libraries.maps.MapView
@@ -30,6 +31,7 @@ import com.google.maps.android.ktx.awaitMap
 
 object TeamDetailsComposable {
 
+    @ExperimentalMaterialApi
     @Composable
     fun TeamDetailsScreen(viewModel: TeamDetailsViewModel, navController: NavController) {
         val uiModel = viewModel.uiState
@@ -38,39 +40,39 @@ object TeamDetailsComposable {
             val pubList = uiModel.value.pubList
             val restaurantList = uiModel.value.restaurantList
             val hotelList = uiModel.value.hotelList
-            Surface(color = MaterialTheme.colors.background) {
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = {
-                                Text(
-                                    text = team?.name
-                                        ?: stringResource(R.string.team_name_placeholder_text)
-                                )
-                            },
-                        )
-                    }
-                ) {
-                    val isLoading = viewModel.loadingState.value
-                    if (isLoading) {
-                        LoadingComposable()
-                    } else {
-                        if (team != null) {
-                            ContentComposable(team, pubList, restaurantList, hotelList)
-                        } else
-                            ErrorComposable(errorMsg = "Team not found")
-                    }
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            Text(
+                                text = team?.name
+                                    ?: stringResource(R.string.app_name)
+                            )
+                        },
+                    )
+                }
+            ) {
+                val isLoading = viewModel.loadingState.value
+                if (isLoading) {
+                    LoadingComposable()
+                } else {
+                    if (team != null) {
+                        ContentComposable(team, pubList, restaurantList, hotelList, navController)
+                    } else
+                        ErrorComposable(errorMsg = "Team not found")
                 }
             }
         }
     }
 
+    @ExperimentalMaterialApi
     @Composable
     fun ContentComposable(
         team: Team,
         pubList: List<AttractionSummaryUiState>?,
         restaurantList: List<AttractionSummaryUiState>?,
-        hotelList: List<AttractionSummaryUiState>?
+        hotelList: List<AttractionSummaryUiState>?,
+        navController: NavController
     ) {
         var tabIndex by remember { mutableStateOf(0) }
         val tabData = listOf(
@@ -93,15 +95,16 @@ object TeamDetailsComposable {
             when (tabIndex) {
                 0 -> OverviewTab(team.imageUrl, team.stadiumName, team.description)
                 1 -> LocationTab(team.mapsLatitude, team.mapsLongitude)
-                2 -> PubsTab(pubList)
-                3 -> RestaurantsTab(restaurantList)
-                4 -> HotelsTab(hotelList)
+                2 -> PubsTab(pubList, navController)
+                3 -> RestaurantsTab(restaurantList, navController)
+                4 -> HotelsTab(hotelList, navController)
             }
         }
     }
 
+    @ExperimentalMaterialApi
     @Composable private
-    fun HotelsTab(hotelList: List<AttractionSummaryUiState>?) {
+    fun HotelsTab(hotelList: List<AttractionSummaryUiState>?, navController: NavController) {
         LazyColumn {
             if (hotelList != null) {
                 items(hotelList) { hotel ->
@@ -110,7 +113,9 @@ object TeamDetailsComposable {
                         imageUrl = hotel.imageUrl,
                         icons = hotel.ratings,
                         ratingAmount = hotel.totalRatings,
-                        shortAddress = hotel.shortAddress
+                        shortAddress = hotel.shortAddress,
+                        navController = navController,
+                        placeId = hotel.placeId
                     )
                 }
             } else {
@@ -121,8 +126,12 @@ object TeamDetailsComposable {
         }
     }
 
+    @ExperimentalMaterialApi
     @Composable private
-    fun RestaurantsTab(restaurantList: List<AttractionSummaryUiState>?) {
+    fun RestaurantsTab(
+        restaurantList: List<AttractionSummaryUiState>?,
+        navController: NavController
+    ) {
         LazyColumn {
             if (restaurantList != null) {
                 items(restaurantList) { restaurant ->
@@ -131,7 +140,9 @@ object TeamDetailsComposable {
                         imageUrl = restaurant.imageUrl,
                         icons = restaurant.ratings,
                         ratingAmount = restaurant.totalRatings,
-                        shortAddress = restaurant.shortAddress
+                        shortAddress = restaurant.shortAddress,
+                        navController = navController,
+                        placeId = restaurant.placeId
                     )
                 }
             } else {
@@ -142,8 +153,9 @@ object TeamDetailsComposable {
         }
     }
 
+    @ExperimentalMaterialApi
     @Composable private
-    fun PubsTab(pubList: List<AttractionSummaryUiState>?) {
+    fun PubsTab(pubList: List<AttractionSummaryUiState>?, navController: NavController) {
         LazyColumn {
             if (pubList != null) {
                 items(pubList) { pub ->
@@ -152,7 +164,9 @@ object TeamDetailsComposable {
                         imageUrl = pub.imageUrl,
                         icons = pub.ratings,
                         ratingAmount = pub.totalRatings,
-                        shortAddress = pub.shortAddress
+                        shortAddress = pub.shortAddress,
+                        navController = navController,
+                        placeId = pub.placeId
                     )
                 }
             } else {
@@ -170,23 +184,22 @@ object TeamDetailsComposable {
             Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
-                .background(MaterialTheme.colors.surface)
         ) {
-            Image(
-                painter = rememberImagePainter(imageUrl),
-                contentDescription = "Stadium Image",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1.777f),
-                contentScale = ContentScale.Crop
-            )
-
-            Column(
-                Modifier.padding(horizontal = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(stadiumName ?: "Stadium Name", style = MaterialTheme.typography.h2)
-                Text(description ?: "Description")
+            Column(Modifier.background(MaterialTheme.colors.surface)) {
+                Image(
+                    painter = rememberImagePainter(imageUrl),
+                    contentDescription = "Stadium Image",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1.777f),
+                    contentScale = ContentScale.Crop
+                )
+                Text(stadiumName ?: "Stadium Name", style = MaterialTheme.typography.h2, modifier = Modifier.padding(horizontal = 8.dp))
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            Column(Modifier.background(MaterialTheme.colors.surface).padding(horizontal = 8.dp)) {
+                Text("Ground Description", style = MaterialTheme.typography.subtitle1)
+                Text(description ?: "Description", style = MaterialTheme.typography.body1)
             }
         }
     }
@@ -242,9 +255,13 @@ object TeamDetailsComposable {
         AndroidView({ map })
     }
 
+    @ExperimentalMaterialApi
     @Composable
-    fun AttractionSummaryComposable(name: String?, imageUrl: String?, icons: List<ImageVector>?, ratingAmount: Int?, shortAddress: String?) {
-        Card(Modifier.padding(4.dp)) {
+    fun AttractionSummaryComposable(name: String?, imageUrl: String?, icons: List<ImageVector>?, ratingAmount: Int?, shortAddress: String?, placeId: String?, navController: NavController) {
+        Card(
+            modifier = Modifier.padding(4.dp),
+            onClick = { navController.navigate("attraction/$placeId") }
+        ) {
             Column {
                 Image(
                     painter = rememberImagePainter(imageUrl),
@@ -266,38 +283,7 @@ object TeamDetailsComposable {
                             modifier = Modifier.weight(1f, fill = false)
                         )
                         icons?.let {
-                            Row {
-                                Icon(
-                                    imageVector = icons[0],
-                                    contentDescription = "Star",
-                                    Modifier.size(16.dp)
-                                )
-                                Icon(
-                                    imageVector = icons[1],
-                                    contentDescription = "Star",
-                                    Modifier.size(16.dp)
-                                )
-                                Icon(
-                                    imageVector = icons[2],
-                                    contentDescription = "Star",
-                                    Modifier.size(16.dp)
-                                )
-                                Icon(
-                                    imageVector = icons[3],
-                                    contentDescription = "Star",
-                                    Modifier.size(16.dp)
-                                )
-                                Icon(
-                                    imageVector = icons[4],
-                                    contentDescription = "Star",
-                                    Modifier.size(16.dp)
-                                )
-                                Text(
-                                    text = "($ratingAmount)",
-                                    style = MaterialTheme.typography.body2,
-                                    modifier = Modifier.padding(start = 4.dp)
-                                )
-                            }
+                            RatingComposable(icons, ratingAmount)
                         }
                     }
                     Text(

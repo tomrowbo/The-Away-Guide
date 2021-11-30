@@ -5,12 +5,14 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
 
-object FirebaseService {
+class FirebaseService constructor(
+    private val database: FirebaseDatabase
+) {
 
-    private val DATABASE = FirebaseDatabase.getInstance()
+    // private val DATABASE = FirebaseDatabase.getInstance()
 
     fun getAllTeams(): List<Team> {
-        val getTeamsTask = DATABASE.getReference("Teams").get()
+        val getTeamsTask = database.getReference("Teams").get()
         Tasks.await(getTeamsTask)
         return getTeamsTask.result.children.map { team ->
             mapToTeam(team)
@@ -18,8 +20,9 @@ object FirebaseService {
     }
 
     fun getTeamDetails(teamUrl: String): Team {
-        val getTeamTask = DATABASE.getReference("Teams").child(teamUrl).get()
-        val getTeamFurtherInfoTask = DATABASE.getReference("TeamDetails").child(teamUrl).get()
+        val database = FirebaseDatabase.getInstance()
+        val getTeamTask = database.getReference("Teams").child(teamUrl).get()
+        val getTeamFurtherInfoTask = database.getReference("TeamDetails").child(teamUrl).get()
         Tasks.await(getTeamTask)
         Tasks.await(getTeamFurtherInfoTask)
         return mapToDetailedTeam(mapToTeam(getTeamTask.result), getTeamFurtherInfoTask.result)

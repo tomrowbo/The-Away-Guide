@@ -2,6 +2,7 @@ package com.example.theawayguide.di
 
 import com.example.theawayguide.network.FirebaseService
 import com.example.theawayguide.network.RetrofitService
+import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -18,7 +19,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideFirebaseService(): FirebaseService {
-        return FirebaseService
+        return FirebaseService(FirebaseDatabase.getInstance())
     }
 
     @Singleton

@@ -92,11 +92,9 @@ constructor(
         }
     }
 
-    private fun mapToAttractionUiModel(attraction: Attraction): AttractionSummaryUiState {
-        var ratingIcons: ArrayList<ImageVector>? = null
-        if (attraction.rating != null) {
-            val rating = attraction.rating
-            ratingIcons = ArrayList()
+    private fun mapRating(rating: Double?): List<ImageVector>? {
+        if (rating != null) {
+            val ratingIcons: ArrayList<ImageVector> = ArrayList()
             for (i in 1..5) {
                 ratingIcons.add(
                     when {
@@ -105,16 +103,26 @@ constructor(
                     }
                 )
             }
+            return ratingIcons
         }
+        return null
+    }
+
+    private fun mapToAttractionUiModel(attraction: Attraction): AttractionSummaryUiState {
         return AttractionSummaryUiState(
             attraction.name ?: "",
-            "https://maps.googleapis.com/maps/api/place/" +
-                "photo?maxwidth=3840&" +
-                "photo_reference=${attraction.imageUrl}" +
-                "&key=${BuildConfig.MAPS_API_KEY}" ?: "",
-            ratingIcons,
+            mapToImageUrl(attraction.imageUrl),
+            mapRating(attraction.rating),
             attraction.totalRatings ?: -1,
-            attraction.address
+            attraction.address,
+            attraction.placeId
         )
+    }
+
+    private fun mapToImageUrl(imageUrl: String?): String {
+        return "https://maps.googleapis.com/maps/api/place/" +
+            "photo?maxwidth=3840&" +
+            "photo_reference=$imageUrl" +
+            "&key=${BuildConfig.MAPS_API_KEY}"
     }
 }
