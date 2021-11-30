@@ -2,13 +2,7 @@ package com.example.theawayguide.presentation.attractiondetails
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Phone
@@ -17,11 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
-import com.example.theawayguide.R
 import com.example.theawayguide.presentation.common.RatingComposable
 
 object AttractionDetailsComposable {
@@ -31,31 +23,44 @@ object AttractionDetailsComposable {
         val uiState = attractionDetailsViewModel.uiState.value
         val isLoading = attractionDetailsViewModel.loadingState
 
-        ContentComposable(uiState)
+        ContentComposable(uiState, navController)
     }
 
     @Composable
-    private fun ContentComposable(uiState: AttractionDetailsUiState) {
+    private fun ContentComposable(uiState: AttractionDetailsUiState, navController: NavController) {
         val scrollState = rememberScrollState()
         Column(
             Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
-                .background(MaterialTheme.colors.surface)
+                .background(MaterialTheme.colors.background)
         ) {
 
-            HeaderImage(uiState.imageUrl)
-
+            Column(Modifier.background(MaterialTheme.colors.surface)) {
+                HeaderImage(uiState.imageUrl)
+                Column(
+                    Modifier.padding(horizontal = 8.dp),
+                ) {
+                    Text(uiState.name ?: "Attraction Name", style = MaterialTheme.typography.h2)
+                    RatingAndPriceRow(uiState.ratingIcons, uiState.totalRatings, uiState.priceLevel)
+                }
+            }
+            Spacer(modifier = Modifier.height(4.dp))
             Column(
-                Modifier.padding(horizontal = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
+                Modifier.fillMaxWidth().background(MaterialTheme.colors.surface).padding(8.dp),
             ) {
-
-                Text(uiState.name?:"Team Name", style = MaterialTheme.typography.h2)
-                AllTagsRow(uiState.tags, scrollState)
-                RatingAndPriceRow(uiState.ratingIcons, uiState.totalRatings, uiState.priceLevel)
                 PhoneNumberRow(uiState.phoneNumber)
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            Column(
+                Modifier.fillMaxWidth().background(MaterialTheme.colors.surface).padding(8.dp),
+            ) {
                 AddressRow(uiState.address)
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            Column(
+                Modifier.fillMaxWidth().background(MaterialTheme.colors.surface).padding(8.dp),
+            ) {
                 OpeningHoursComposable(uiState.openingHours)
             }
         }
@@ -129,26 +134,5 @@ object AttractionDetailsComposable {
                 .aspectRatio(1.777f),
             contentScale = ContentScale.Crop
         )
-    }
-
-    @Composable
-    private fun AllTagsRow(tags: List<String>?, scrollState: ScrollState) {
-        tags?.let {
-            LazyRow() {
-                items(it) { tag ->
-                    TagComposable(tag)
-                }
-            }
-        }
-    }
-
-    @Composable
-    fun TagComposable(tagName: String) {
-        Card(
-            backgroundColor = MaterialTheme.colors.primary,
-            modifier = Modifier.padding(4.dp)
-        ) {
-            Text(tagName, modifier = Modifier.padding(2.dp))
-        }
     }
 }

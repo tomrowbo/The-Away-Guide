@@ -97,21 +97,15 @@ class TeamRepositoryImplTest {
                 PlaceDTO(
                     name = PLACE_NAME,
                     photos = listOf(PhotoDTO(PHOTO_REFERENCE)),
-                    geometry = GeometryDTO(LocationDTO(lat = LATITUDE, lng = LONGITUDE)),
                     rating = RATING,
-                    priceLevel = PRICE_LEVEL,
                     userRatingsTotal = TOTAL_RATINGS,
-                    types = emptyList(),
                     vicinity = VICINITY
                 ),
                 PlaceDTO(
                     name = PLACE_NAME2,
                     photos = listOf(PhotoDTO(PHOTO_REFERENCE)),
-                    geometry = GeometryDTO(LocationDTO(lat = LATITUDE, lng = LONGITUDE)),
                     rating = RATING,
-                    priceLevel = PRICE_LEVEL,
                     userRatingsTotal = TOTAL_RATINGS,
-                    types = emptyList(),
                     vicinity = VICINITY
                 )
             )
@@ -126,7 +120,6 @@ class TeamRepositoryImplTest {
                 address = VICINITY,
                 rating = RATING,
                 placeId = "",
-                tags = emptyList(),
                 totalRatings = TOTAL_RATINGS,
                 priceLevel = PRICE_LEVEL
             ),
@@ -136,7 +129,6 @@ class TeamRepositoryImplTest {
                 address = VICINITY,
                 rating = RATING,
                 placeId = "",
-                tags = emptyList(),
                 totalRatings = TOTAL_RATINGS,
                 priceLevel = PRICE_LEVEL
             )

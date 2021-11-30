@@ -40,28 +40,26 @@ object TeamDetailsComposable {
             val pubList = uiModel.value.pubList
             val restaurantList = uiModel.value.restaurantList
             val hotelList = uiModel.value.hotelList
-            Surface(color = MaterialTheme.colors.background) {
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = {
-                                Text(
-                                    text = team?.name
-                                        ?: stringResource(R.string.app_name)
-                                )
-                            },
-                        )
-                    }
-                ) {
-                    val isLoading = viewModel.loadingState.value
-                    if (isLoading) {
-                        LoadingComposable()
-                    } else {
-                        if (team != null) {
-                            ContentComposable(team, pubList, restaurantList, hotelList, navController)
-                        } else
-                            ErrorComposable(errorMsg = "Team not found")
-                    }
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            Text(
+                                text = team?.name
+                                    ?: stringResource(R.string.app_name)
+                            )
+                        },
+                    )
+                }
+            ) {
+                val isLoading = viewModel.loadingState.value
+                if (isLoading) {
+                    LoadingComposable()
+                } else {
+                    if (team != null) {
+                        ContentComposable(team, pubList, restaurantList, hotelList, navController)
+                    } else
+                        ErrorComposable(errorMsg = "Team not found")
                 }
             }
         }
@@ -186,23 +184,22 @@ object TeamDetailsComposable {
             Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
-                .background(MaterialTheme.colors.surface)
         ) {
-            Image(
-                painter = rememberImagePainter(imageUrl),
-                contentDescription = "Stadium Image",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1.777f),
-                contentScale = ContentScale.Crop
-            )
-
-            Column(
-                Modifier.padding(horizontal = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                Text(stadiumName ?: "Stadium Name", style = MaterialTheme.typography.h2)
-                Text(description ?: "Description")
+            Column(Modifier.background(MaterialTheme.colors.surface)) {
+                Image(
+                    painter = rememberImagePainter(imageUrl),
+                    contentDescription = "Stadium Image",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1.777f),
+                    contentScale = ContentScale.Crop
+                )
+                Text(stadiumName ?: "Stadium Name", style = MaterialTheme.typography.h2, modifier = Modifier.padding(horizontal = 8.dp))
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            Column(Modifier.background(MaterialTheme.colors.surface).padding(horizontal = 8.dp)) {
+                Text("Ground Description", style = MaterialTheme.typography.subtitle1)
+                Text(description ?: "Description", style = MaterialTheme.typography.body1)
             }
         }
     }

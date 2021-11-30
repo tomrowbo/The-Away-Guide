@@ -105,7 +105,6 @@ class TeamRepositoryImpl(
             rating = dto.rating,
             totalRatings = dto.userRatingsTotal,
             priceLevel = dto.priceLevel,
-            tags = dto.types,
             phoneNumber = dto.formattedPhoneNumber,
             website = dto.website,
             openNow = dto.openingHours?.openNow,

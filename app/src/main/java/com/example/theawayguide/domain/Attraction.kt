@@ -8,7 +8,6 @@ data class Attraction(
     val placeId: String? = "",
     val totalRatings: Int? = null,
     val priceLevel: Int? = null,
-    val tags: List<String>? = emptyList(),
     val phoneNumber: String? = "",
     val website: String? = "",
     val openNow: Boolean? = null,

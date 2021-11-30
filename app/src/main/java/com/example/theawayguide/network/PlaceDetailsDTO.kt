@@ -47,10 +47,6 @@ class Result(
     @Expose
     var rating: Double? = null,
 
-    @SerializedName("types")
-    @Expose
-    var types: List<String>? = null,
-
     @SerializedName("user_ratings_total")
     @Expose
     var userRatingsTotal: Int? = null,

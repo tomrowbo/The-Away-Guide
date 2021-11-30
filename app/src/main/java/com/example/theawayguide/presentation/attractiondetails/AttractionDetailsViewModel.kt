@@ -54,7 +54,6 @@ constructor(
                 address = attraction.address,
                 ratingIcons = mapRating(attraction.rating),
                 totalRatings = attraction.totalRatings,
-                tags = attraction.tags,
                 phoneNumber = attraction.phoneNumber,
                 website = attraction.website,
                 openNow = mapOpenNow(attraction.openNow),
@@ -95,8 +94,8 @@ constructor(
 
     private fun mapToImageUrl(imageUrl: String?): String {
         return "https://maps.googleapis.com/maps/api/place/" +
-                "photo?maxwidth=3840&" +
-                "photo_reference=${imageUrl}" +
-                "&key=${BuildConfig.MAPS_API_KEY}"
+            "photo?maxwidth=3840&" +
+            "photo_reference=$imageUrl" +
+            "&key=${BuildConfig.MAPS_API_KEY}"
     }
 }

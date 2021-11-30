@@ -9,7 +9,6 @@ data class AttractionDetailsUiState(
     val address: String? = "",
     val ratingIcons: List<ImageVector>? = null,
     val totalRatings: Int? = null,
-    val tags: List<String>? = emptyList(),
     val phoneNumber: String? = "",
     val website: String? = "",
     val openNow: String? = "",

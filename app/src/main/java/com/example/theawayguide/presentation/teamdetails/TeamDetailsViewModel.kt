@@ -108,8 +108,6 @@ constructor(
         return null
     }
 
-
-
     private fun mapToAttractionUiModel(attraction: Attraction): AttractionSummaryUiState {
         return AttractionSummaryUiState(
             attraction.name ?: "",
@@ -123,8 +121,8 @@ constructor(
 
     private fun mapToImageUrl(imageUrl: String?): String {
         return "https://maps.googleapis.com/maps/api/place/" +
-        "photo?maxwidth=3840&" +
-        "photo_reference=${imageUrl}" +
-        "&key=${BuildConfig.MAPS_API_KEY}"
+            "photo?maxwidth=3840&" +
+            "photo_reference=$imageUrl" +
+            "&key=${BuildConfig.MAPS_API_KEY}"
     }
 }

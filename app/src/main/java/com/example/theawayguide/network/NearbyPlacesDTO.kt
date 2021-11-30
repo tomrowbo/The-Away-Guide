@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 class NearbyPlacesDTO(
+
+    // Needed for future pagination
     @SerializedName("next_page_token")
     @Expose
     var nextPageToken: String? = null,
@@ -23,10 +25,6 @@ class PlaceDTO(
     @Expose
     val photos: List<PhotoDTO>? = null,
 
-    @SerializedName("geometry")
-    @Expose
-    val geometry: GeometryDTO? = null,
-
     @SerializedName("rating")
     @Expose
     val rating: Double? = null,
@@ -35,37 +33,13 @@ class PlaceDTO(
     @Expose
     val placeId: String? = null,
 
-    @SerializedName("price_level")
-    @Expose
-    val priceLevel: Int? = null,
-
     @SerializedName("user_ratings_total")
     @Expose
     val userRatingsTotal: Int? = null,
 
-    @SerializedName("types")
-    @Expose
-    val types: kotlin.collections.List<String>? = null,
-
     @SerializedName("vicinity")
     @Expose
     val vicinity: String? = null
-)
-
-class GeometryDTO(
-    @SerializedName("location")
-    @Expose
-    var location: LocationDTO? = null,
-)
-
-class LocationDTO(
-    @SerializedName("lat")
-    @Expose
-    var lat: Double? = null,
-
-    @SerializedName("lng")
-    @Expose
-    var lng: Double? = null
 )
 
 class PhotoDTO(
