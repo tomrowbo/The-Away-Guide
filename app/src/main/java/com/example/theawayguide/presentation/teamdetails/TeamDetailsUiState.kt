@@ -16,4 +16,5 @@ data class AttractionSummaryUiState(
     val ratings: List<ImageVector>? = null,
     val totalRatings: Int? = null,
     val shortAddress: String? = "",
+    val placeId: String? = "",
 )

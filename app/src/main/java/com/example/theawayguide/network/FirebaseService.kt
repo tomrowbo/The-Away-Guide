@@ -9,7 +9,7 @@ class FirebaseService constructor(
     private val database: FirebaseDatabase
 ) {
 
-    //private val DATABASE = FirebaseDatabase.getInstance()
+    // private val DATABASE = FirebaseDatabase.getInstance()
 
     fun getAllTeams(): List<Team> {
         val getTeamsTask = database.getReference("Teams").get()

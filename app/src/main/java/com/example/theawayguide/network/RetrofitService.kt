@@ -11,5 +11,11 @@ interface RetrofitService {
         @Query("radius") radius: Int,
         @Query("type") type: String,
         @Query("key") key: String
-    ): MapsDTO
+    ): NearbyPlacesDTO
+
+    @GET("api/place/details/json")
+    suspend fun placeDetailsSearch(
+        @Query("place_id") placeId: String,
+        @Query("key") key: String
+    ): PlaceDetailsDTO
 }

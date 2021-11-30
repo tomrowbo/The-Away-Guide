@@ -8,6 +8,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.theawayguide.presentation.attractiondetails.AttractionDetailsComposable.AttractionScreen
+import com.example.theawayguide.presentation.attractiondetails.AttractionDetailsViewModel
 import com.example.theawayguide.presentation.teamdetails.TeamDetailsComposable.TeamDetailsScreen
 import com.example.theawayguide.presentation.teamdetails.TeamDetailsViewModel
 import com.example.theawayguide.presentation.teamlist.TeamListComposable.TeamListScreen
@@ -35,6 +37,10 @@ class MainActivity : FragmentActivity() {
                             teamDetailsViewModel,
                             navController
                         )
+                    }
+                    composable("attraction/{attractionId}") {
+                        val attractionDetailsViewModel = hiltViewModel<AttractionDetailsViewModel>()
+                        AttractionScreen(attractionDetailsViewModel, navController)
                     }
                 }
             }

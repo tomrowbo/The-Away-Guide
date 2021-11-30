@@ -31,6 +31,7 @@ import com.google.maps.android.ktx.awaitMap
 
 object TeamDetailsComposable {
 
+    @ExperimentalMaterialApi
     @Composable
     fun TeamDetailsScreen(viewModel: TeamDetailsViewModel, navController: NavController) {
         val uiModel = viewModel.uiState
@@ -46,7 +47,7 @@ object TeamDetailsComposable {
                             title = {
                                 Text(
                                     text = team?.name
-                                        ?: stringResource(R.string.team_name_placeholder_text)
+                                        ?: stringResource(R.string.app_name)
                                 )
                             },
                         )
@@ -57,7 +58,7 @@ object TeamDetailsComposable {
                         LoadingComposable()
                     } else {
                         if (team != null) {
-                            ContentComposable(team, pubList, restaurantList, hotelList)
+                            ContentComposable(team, pubList, restaurantList, hotelList, navController)
                         } else
                             ErrorComposable(errorMsg = "Team not found")
                     }
@@ -66,12 +67,14 @@ object TeamDetailsComposable {
         }
     }
 
+    @ExperimentalMaterialApi
     @Composable
     fun ContentComposable(
         team: Team,
         pubList: List<AttractionSummaryUiState>?,
         restaurantList: List<AttractionSummaryUiState>?,
-        hotelList: List<AttractionSummaryUiState>?
+        hotelList: List<AttractionSummaryUiState>?,
+        navController: NavController
     ) {
         var tabIndex by remember { mutableStateOf(0) }
         val tabData = listOf(
@@ -94,15 +97,16 @@ object TeamDetailsComposable {
             when (tabIndex) {
                 0 -> OverviewTab(team.imageUrl, team.stadiumName, team.description)
                 1 -> LocationTab(team.mapsLatitude, team.mapsLongitude)
-                2 -> PubsTab(pubList)
-                3 -> RestaurantsTab(restaurantList)
-                4 -> HotelsTab(hotelList)
+                2 -> PubsTab(pubList, navController)
+                3 -> RestaurantsTab(restaurantList, navController)
+                4 -> HotelsTab(hotelList, navController)
             }
         }
     }
 
+    @ExperimentalMaterialApi
     @Composable private
-    fun HotelsTab(hotelList: List<AttractionSummaryUiState>?) {
+    fun HotelsTab(hotelList: List<AttractionSummaryUiState>?, navController: NavController) {
         LazyColumn {
             if (hotelList != null) {
                 items(hotelList) { hotel ->
@@ -111,7 +115,9 @@ object TeamDetailsComposable {
                         imageUrl = hotel.imageUrl,
                         icons = hotel.ratings,
                         ratingAmount = hotel.totalRatings,
-                        shortAddress = hotel.shortAddress
+                        shortAddress = hotel.shortAddress,
+                        navController = navController,
+                        placeId = hotel.placeId
                     )
                 }
             } else {
@@ -122,8 +128,12 @@ object TeamDetailsComposable {
         }
     }
 
+    @ExperimentalMaterialApi
     @Composable private
-    fun RestaurantsTab(restaurantList: List<AttractionSummaryUiState>?) {
+    fun RestaurantsTab(
+        restaurantList: List<AttractionSummaryUiState>?,
+        navController: NavController
+    ) {
         LazyColumn {
             if (restaurantList != null) {
                 items(restaurantList) { restaurant ->
@@ -132,7 +142,9 @@ object TeamDetailsComposable {
                         imageUrl = restaurant.imageUrl,
                         icons = restaurant.ratings,
                         ratingAmount = restaurant.totalRatings,
-                        shortAddress = restaurant.shortAddress
+                        shortAddress = restaurant.shortAddress,
+                        navController = navController,
+                        placeId = restaurant.placeId
                     )
                 }
             } else {
@@ -143,8 +155,9 @@ object TeamDetailsComposable {
         }
     }
 
+    @ExperimentalMaterialApi
     @Composable private
-    fun PubsTab(pubList: List<AttractionSummaryUiState>?) {
+    fun PubsTab(pubList: List<AttractionSummaryUiState>?, navController: NavController) {
         LazyColumn {
             if (pubList != null) {
                 items(pubList) { pub ->
@@ -153,7 +166,9 @@ object TeamDetailsComposable {
                         imageUrl = pub.imageUrl,
                         icons = pub.ratings,
                         ratingAmount = pub.totalRatings,
-                        shortAddress = pub.shortAddress
+                        shortAddress = pub.shortAddress,
+                        navController = navController,
+                        placeId = pub.placeId
                     )
                 }
             } else {
@@ -243,9 +258,13 @@ object TeamDetailsComposable {
         AndroidView({ map })
     }
 
+    @ExperimentalMaterialApi
     @Composable
-    fun AttractionSummaryComposable(name: String?, imageUrl: String?, icons: List<ImageVector>?, ratingAmount: Int?, shortAddress: String?) {
-        Card(Modifier.padding(4.dp)) {
+    fun AttractionSummaryComposable(name: String?, imageUrl: String?, icons: List<ImageVector>?, ratingAmount: Int?, shortAddress: String?, placeId: String?, navController: NavController) {
+        Card(
+            modifier = Modifier.padding(4.dp),
+            onClick = { navController.navigate("attraction/$placeId") }
+        ) {
             Column {
                 Image(
                     painter = rememberImagePainter(imageUrl),

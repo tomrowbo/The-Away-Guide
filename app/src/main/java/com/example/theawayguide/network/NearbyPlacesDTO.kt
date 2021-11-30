@@ -3,7 +3,7 @@ package com.example.theawayguide.network
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class MapsDTO(
+class NearbyPlacesDTO(
     @SerializedName("next_page_token")
     @Expose
     var nextPageToken: String? = null,
@@ -30,6 +30,10 @@ class PlaceDTO(
     @SerializedName("rating")
     @Expose
     val rating: Double? = null,
+
+    @SerializedName("place_id")
+    @Expose
+    val placeId: String? = null,
 
     @SerializedName("price_level")
     @Expose

@@ -17,12 +17,14 @@ class TeamRepositoryImplTest {
     @MockK
     private lateinit var retrofitService: RetrofitService
 
+    @MockK
+    private lateinit var firebaseService: FirebaseService
+
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
 
-        // TODO: Broken as cannot mock firebase
-        teamRepositoryImpl = TeamRepositoryImpl(mockk(), retrofitService)
+        teamRepositoryImpl = TeamRepositoryImpl(firebaseService, retrofitService)
     }
 
     @Test
@@ -46,8 +48,50 @@ class TeamRepositoryImplTest {
         }
     }
 
-    fun getMockMapsDTO(): MapsDTO {
-        return MapsDTO(
+    @Test
+    fun WHEN_getPubs_THEN_returnListAttractions() {
+        runBlocking {
+            // GIVEN
+            coEvery {
+                retrofitService.nearbyPlaceSearch(
+                    any(),
+                    any(),
+                    any(),
+                    any()
+                )
+            } returns getMockMapsDTO()
+
+            // WHEN
+            val attractions = teamRepositoryImpl.getPubs(LATITUDE, LONGITUDE, RADIUS)
+
+            // THEN
+            assertEquals(attractions, getMockAttractionsList())
+        }
+    }
+
+    @Test
+    fun WHEN_getHotels_THEN_returnListAttractions() {
+        runBlocking {
+            // GIVEN
+            coEvery {
+                retrofitService.nearbyPlaceSearch(
+                    any(),
+                    any(),
+                    any(),
+                    any()
+                )
+            } returns getMockMapsDTO()
+
+            // WHEN
+            val attractions = teamRepositoryImpl.getHotels(LATITUDE, LONGITUDE, RADIUS)
+
+            // THEN
+            assertEquals(attractions, getMockAttractionsList())
+        }
+    }
+
+    private fun getMockMapsDTO(): NearbyPlacesDTO {
+        return NearbyPlacesDTO(
             NEXT_PAGE_TOKEN,
             listOf(
                 PlaceDTO(
@@ -74,29 +118,27 @@ class TeamRepositoryImplTest {
         )
     }
 
-    fun getMockAttractionsList(): List<Attraction> {
+    private fun getMockAttractionsList(): List<Attraction> {
         return listOf(
             Attraction(
                 name = PLACE_NAME2,
                 imageUrl = PHOTO_REFERENCE,
-                rating = RATING,
-                priceLevel = PRICE_LEVEL,
                 address = VICINITY,
+                rating = RATING,
+                placeId = "",
                 tags = emptyList(),
-                latitude = LATITUDE,
-                longitude = LONGITUDE,
-                totalRatings = TOTAL_RATINGS
+                totalRatings = TOTAL_RATINGS,
+                priceLevel = PRICE_LEVEL
             ),
             Attraction(
                 name = PLACE_NAME,
                 imageUrl = PHOTO_REFERENCE,
-                rating = RATING,
-                priceLevel = PRICE_LEVEL,
                 address = VICINITY,
+                rating = RATING,
+                placeId = "",
                 tags = emptyList(),
-                latitude = LATITUDE,
-                longitude = LONGITUDE,
-                totalRatings = TOTAL_RATINGS
+                totalRatings = TOTAL_RATINGS,
+                priceLevel = PRICE_LEVEL
             )
         )
     }

@@ -5,6 +5,7 @@ import com.example.theawayguide.domain.Attraction
 import com.example.theawayguide.domain.Team
 import com.example.theawayguide.network.FirebaseService
 import com.example.theawayguide.network.PlaceDTO
+import com.example.theawayguide.network.Result
 import com.example.theawayguide.network.RetrofitService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -26,7 +27,11 @@ class TeamRepositoryImpl(
         }
     }
 
-    override suspend fun getRestaurants(latitude: Double, longitude: Double, radius: Int): List<Attraction>? {
+    override suspend fun getRestaurants(
+        latitude: Double,
+        longitude: Double,
+        radius: Int
+    ): List<Attraction>? {
         return retrofitService.nearbyPlaceSearch(
             "$latitude,$longitude",
             radius,
@@ -34,11 +39,15 @@ class TeamRepositoryImpl(
             BuildConfig.MAPS_API_KEY
         )
             .results?.map {
-                mapToAttraction(it)
+                mapToAttractionSummary(it)
             }?.reversed()
     }
 
-    override suspend fun getHotels(latitude: Double, longitude: Double, radius: Int): List<Attraction>? {
+    override suspend fun getHotels(
+        latitude: Double,
+        longitude: Double,
+        radius: Int
+    ): List<Attraction>? {
         return retrofitService.nearbyPlaceSearch(
             "$latitude,$longitude",
             radius,
@@ -46,11 +55,15 @@ class TeamRepositoryImpl(
             BuildConfig.MAPS_API_KEY
         )
             .results?.map {
-                mapToAttraction(it)
+                mapToAttractionSummary(it)
             }?.reversed()
     }
 
-    override suspend fun getPubs(latitude: Double, longitude: Double, radius: Int): List<Attraction>? {
+    override suspend fun getPubs(
+        latitude: Double,
+        longitude: Double,
+        radius: Int
+    ): List<Attraction>? {
         return retrofitService.nearbyPlaceSearch(
             "$latitude,$longitude",
             radius,
@@ -58,21 +71,45 @@ class TeamRepositoryImpl(
             BuildConfig.MAPS_API_KEY
         )
             .results?.map {
-                mapToAttraction(it)
+                mapToAttractionSummary(it)
             }?.reversed()
     }
 
-    private fun mapToAttraction(placeDTO: PlaceDTO): Attraction {
+    private fun mapToAttractionSummary(placeDTO: PlaceDTO): Attraction {
         return Attraction(
             placeDTO.name,
             placeDTO.photos?.get(0)?.photoReference,
             placeDTO.vicinity,
             placeDTO.rating,
-            placeDTO.types,
-            placeDTO.geometry?.location?.lat,
-            placeDTO.geometry?.location?.lng,
-            placeDTO.userRatingsTotal,
-            placeDTO.priceLevel
+            placeDTO.placeId,
+            placeDTO.userRatingsTotal
+        )
+    }
+
+    override suspend fun getAttractionDetails(placeId: String): Attraction? {
+        return retrofitService.placeDetailsSearch(
+            placeId,
+            BuildConfig.MAPS_API_KEY
+        ).result?.let {
+            mapToAttraction(
+                it
+            )
+        }
+    }
+
+    private fun mapToAttraction(dto: Result): Attraction {
+        return Attraction(
+            name = dto.name,
+            imageUrl = dto.photos?.get(0)?.photoReference,
+            address = dto.formattedAddress,
+            rating = dto.rating,
+            totalRatings = dto.userRatingsTotal,
+            priceLevel = dto.priceLevel,
+            tags = dto.types,
+            phoneNumber = dto.formattedPhoneNumber,
+            website = dto.website,
+            openNow = dto.openingHours?.openNow,
+            openingHours = dto.openingHours?.weekdayText
         )
     }
 }
