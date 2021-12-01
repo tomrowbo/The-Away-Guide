@@ -11,9 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
+import com.example.theawayguide.R
 import com.example.theawayguide.presentation.common.RatingComposable
 
 object AttractionDetailsComposable {
@@ -41,7 +43,7 @@ object AttractionDetailsComposable {
                 Column(
                     Modifier.padding(horizontal = 8.dp),
                 ) {
-                    Text(uiState.name ?: "Attraction Name", style = MaterialTheme.typography.h2)
+                    Text(uiState.name ?: stringResource(R.string.attractionNamePlaceholder), style = MaterialTheme.typography.h2, color = MaterialTheme.colors.onPrimary)
                     RatingAndPriceRow(uiState.ratingIcons, uiState.totalRatings, uiState.priceLevel)
                 }
             }
@@ -69,9 +71,9 @@ object AttractionDetailsComposable {
     @Composable
     private fun OpeningHoursComposable(openingHours: List<String>?) {
         Column() {
-            Text("Opening Hours", style = MaterialTheme.typography.subtitle1)
+            Text(stringResource(R.string.openingHoursTitle), style = MaterialTheme.typography.subtitle1, color = MaterialTheme.colors.onPrimary)
             openingHours?.forEach { dayInfo ->
-                Text(dayInfo, style = MaterialTheme.typography.body1)
+                Text(dayInfo, style = MaterialTheme.typography.body1, color = MaterialTheme.colors.onPrimary)
             }
         }
     }
@@ -82,12 +84,13 @@ object AttractionDetailsComposable {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     Icons.Filled.Map,
-                    "Map Icon",
+                    stringResource(R.string.mapIconDescription),
                     modifier = Modifier
                         .size(24.dp)
-                        .padding(end = 4.dp)
+                        .padding(end = 4.dp),
+                    tint = MaterialTheme.colors.onPrimary
                 )
-                Text(address, style = MaterialTheme.typography.body1)
+                Text(address, style = MaterialTheme.typography.body1, color = MaterialTheme.colors.onPrimary)
             }
         }
     }
@@ -98,12 +101,13 @@ object AttractionDetailsComposable {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     Icons.Filled.Phone,
-                    "Phone Icon",
+                    stringResource(R.string.phoneIconDescription),
                     modifier = Modifier
                         .size(24.dp)
-                        .padding(end = 4.dp)
+                        .padding(end = 4.dp),
+                    tint = MaterialTheme.colors.onPrimary
                 )
-                Text(it, style = MaterialTheme.typography.body1)
+                Text(it, style = MaterialTheme.typography.body1, color = MaterialTheme.colors.onPrimary)
             }
         }
     }
@@ -118,7 +122,7 @@ object AttractionDetailsComposable {
             ratingIcons?.let { RatingComposable(icons = it, ratingAmount = totalRatings) }
             Text(
                 priceLevel ?: "",
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colors.onPrimary,
                 style = MaterialTheme.typography.body1
             )
         }
@@ -128,11 +132,11 @@ object AttractionDetailsComposable {
     private fun HeaderImage(imageUrl: String?) {
         Image(
             painter = rememberImagePainter(imageUrl),
-            contentDescription = "Attraction Image",
+            contentDescription = stringResource(R.string.attractionImageDescription),
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1.777f),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
         )
     }
 }

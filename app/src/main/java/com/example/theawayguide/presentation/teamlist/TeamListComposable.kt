@@ -159,7 +159,7 @@ object TeamListComposable {
         Column {
             Surface(modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colors.primary) {
                 Text(
-                    "The Away Guide",
+                    stringResource(id = R.string.app_name),
                     style = MaterialTheme.typography.h1,
                     color = MaterialTheme.colors.onPrimary,
                     modifier = Modifier.padding(bottom = 32.dp, top = 64.dp, start = 16.dp)

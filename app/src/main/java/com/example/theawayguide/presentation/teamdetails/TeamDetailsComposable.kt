@@ -196,7 +196,7 @@ object TeamDetailsComposable {
                 )
                 Text(stadiumName ?: "Stadium Name", style = MaterialTheme.typography.h2, modifier = Modifier.padding(horizontal = 8.dp))
             }
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             Column(Modifier.background(MaterialTheme.colors.surface).padding(horizontal = 8.dp)) {
                 Text("Ground Description", style = MaterialTheme.typography.subtitle1)
                 Text(description ?: "Description", style = MaterialTheme.typography.body1)
