@@ -29,16 +29,24 @@ constructor(
         viewModelScope.launch {
             loadingState.value = true
             uiState.value = uiState.value.copy().apply {
-                teamList = teamRepository.getAll() ?: emptyList()
-                leagueList = teamRepository.getAllLeagues() ?: emptyList()
+                teamList = teamRepository.retrieveTeams() ?: emptyList()
+                leagueList = teamRepository.getLeagues() ?: emptyList()
             }
             loadingState.value = false
         }
     }
 
-    private fun updateTeam(leagueId: String){
-        viewModelScope.launch {
-            val teamList = teamRepository.getTeamsByLeague(leagueId)
+    fun onAllTeamsClicked(){
+        uiState.value = uiState.value.copy().apply {
+            teamList = teamRepository.getAllTeams()
+            selectedLeague = "All Teams"
+        }
+    }
+
+    fun onLeagueClicked(leagueId: String, leagueName: String){
+        uiState.value = uiState.value.copy().apply {
+            teamList = teamRepository.getTeamsByLeague(leagueId)
+            selectedLeague = leagueName
         }
     }
 }

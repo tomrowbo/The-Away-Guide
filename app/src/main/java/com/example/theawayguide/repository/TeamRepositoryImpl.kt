@@ -18,7 +18,7 @@ class TeamRepositoryImpl(
 
     private var allTeams = emptyList<Team>()
 
-    override suspend fun getAll(): List<Team> {
+    override suspend fun retrieveTeams(): List<Team> {
         return withContext(Dispatchers.IO) {
             allTeams = firebaseService.getAllTeams()
             allTeams
@@ -101,15 +101,15 @@ class TeamRepositoryImpl(
         }
     }
 
-    override suspend fun getTeamsByLeague(leagueId: String): List<Team> {
-        if (leagueId == "AllTeams"){
-            return allTeams
-        } else{
-            return allTeams.filter { it.league == leagueId }
-        }
+    override fun getTeamsByLeague(leagueId: String): List<Team> {
+        return allTeams.filter { it.league == leagueId }
     }
 
-    override suspend fun getAllLeagues(): List<League> {
+    override fun getAllTeams(): List<Team> {
+        return allTeams
+    }
+
+    override suspend fun getLeagues(): List<League> {
         return withContext(Dispatchers.IO) {
             firebaseService.getLeagues()
         }

@@ -6,7 +6,7 @@ import com.example.theawayguide.domain.Team
 
 interface TeamRepository {
 
-    suspend fun getAll(): List<Team>?
+    suspend fun retrieveTeams(): List<Team>?
 
     suspend fun getTeamDetails(url: String): Team
 
@@ -18,7 +18,9 @@ interface TeamRepository {
 
     suspend fun getAttractionDetails(placeId: String): Attraction?
 
-    suspend fun getTeamsByLeague(leagueId: String): List<Team>?
+    fun getTeamsByLeague(leagueId: String): List<Team>
 
-    suspend fun getAllLeagues(): List<League>?
+    fun getAllTeams(): List<Team>
+
+    suspend fun getLeagues(): List<League>?
 }

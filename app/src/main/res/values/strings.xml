@@ -18,4 +18,5 @@
     <string name="mapIconDescription">Map Icon</string>
     <string name="phoneIconDescription">Phone Icon</string>
     <string name="attractionImageDescription">Attraction Image</string>
+    <string name="leagueBadgeDescription">League Badge</string>
 </resources>
