@@ -21,15 +21,24 @@ constructor(
     var loadingState: MutableState<Boolean> = mutableStateOf(false)
 
     init {
-        getTeams()
+        getScreenInfo()
     }
 
-    private fun getTeams() {
+    private fun getScreenInfo() {
 
         viewModelScope.launch {
             loadingState.value = true
-            uiState.value = uiState.value.copy().apply { teamList = teamRepository.getAll() ?: emptyList() }
+            uiState.value = uiState.value.copy().apply {
+                teamList = teamRepository.getAll() ?: emptyList()
+                leagueList = teamRepository.getAllLeagues() ?: emptyList()
+            }
             loadingState.value = false
+        }
+    }
+
+    private fun updateTeam(leagueId: String){
+        viewModelScope.launch {
+            val teamList = teamRepository.getTeamsByLeague(leagueId)
         }
     }
 }

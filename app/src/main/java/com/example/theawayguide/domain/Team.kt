@@ -9,4 +9,5 @@ data class Team(
     val imageUrl: String? = null,
     val mapsLatitude: Double? = null,
     val mapsLongitude: Double? = null,
+    val league: String? = null
 )

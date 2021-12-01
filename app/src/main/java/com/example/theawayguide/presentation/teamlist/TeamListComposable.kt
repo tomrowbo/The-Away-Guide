@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.theawayguide.R
+import com.example.theawayguide.domain.League
 import com.example.theawayguide.domain.Team
 import com.example.theawayguide.presentation.common.SplashScreenComposable
 import kotlinx.coroutines.CoroutineScope
@@ -43,7 +44,7 @@ object TeamListComposable {
                 Scaffold(
                     scaffoldState = scaffoldState,
                     drawerContent = {
-                        DrawerComposable()
+                        DrawerComposable(uiModel.value.leagueList)
                     },
                     topBar = {
                         TopAppBar(
@@ -155,7 +156,7 @@ object TeamListComposable {
     }
 
     @Composable
-    fun DrawerComposable() {
+    fun DrawerComposable(leagueList: List<League>) {
         Column {
             Surface(modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colors.primary) {
                 Text(
@@ -165,22 +166,32 @@ object TeamListComposable {
                     modifier = Modifier.padding(bottom = 32.dp, top = 64.dp, start = 16.dp)
                 )
             }
-            NavItemCard(
-                NavDrawerItem(
-                    stringResource(R.string.all_teams_title_text),
-                    Icons.Filled.Menu,
-                    stringResource(R.string.all_teams_title_text)
-                ),
-                selected = false
-            ) {}
-            NavItemCard(
-                NavDrawerItem(
-                    "Premier League Teams",
-                    Icons.Filled.Menu,
-                    "Premier League Teams"
-                ),
-                selected = false
-            ) {}
+            LazyColumn{
+                item {
+                    NavItemCard(
+                        NavDrawerItem(
+                            stringResource(R.string.all_teams_title_text),
+                            Icons.Filled.Menu,
+                            stringResource(R.string.all_teams_title_text)
+                        ),
+                        selected = false
+                    ) {}
+                }
+                items(leagueList){ league ->
+                    if (league.id != null && league.name != null)
+                    NavItemCard(
+                        NavDrawerItem(
+                            league.id,
+                            Icons.Filled.Menu,
+                            league.name
+                        ),
+                        selected = false
+                    ) {
+                        //TODO: Add viewmodel
+                    }
+                }
+            }
+
             NavItemCard(
                 NavDrawerItem(
                     "Championship Teams",
@@ -216,4 +227,4 @@ object TeamListComposable {
         }
     }
 }
-data class NavDrawerItem(var route: String, var icon: ImageVector, var title: String)
+data class NavDrawerItem(var id: String, var icon: ImageVector, var title: String)

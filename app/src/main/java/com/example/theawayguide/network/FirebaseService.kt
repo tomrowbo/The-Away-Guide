@@ -1,5 +1,6 @@
 package com.example.theawayguide.network
 
+import com.example.theawayguide.domain.League
 import com.example.theawayguide.domain.Team
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.DataSnapshot
@@ -27,12 +28,30 @@ class FirebaseService constructor(
         return mapToDetailedTeam(mapToTeam(getTeamTask.result), getTeamFurtherInfoTask.result)
     }
 
+    fun getLeagues(): List<League> {
+        val database = FirebaseDatabase.getInstance()
+        val getLeaguesTask = database.getReference("Leagues").get()
+        Tasks.await(getLeaguesTask)
+        return getLeaguesTask.result.children.map { league ->
+            mapToLeague(league)
+        }
+    }
+
+    private fun mapToLeague(leagueSnapshot: DataSnapshot): League {
+        return League(
+            name = leagueSnapshot.value as String?,
+            id = leagueSnapshot.key
+
+        )
+    }
+
     private fun mapToTeam(teamSnapshot: DataSnapshot): Team {
         return Team(
             name = teamSnapshot.child("TeamName").value as String?,
             url = teamSnapshot.key,
             badgeUrl = teamSnapshot.child("BadgeURL").value as String?,
             stadiumName = teamSnapshot.child("StadiumName").value as String?,
+            league = teamSnapshot.child("League").value as String?
         )
     }
 
