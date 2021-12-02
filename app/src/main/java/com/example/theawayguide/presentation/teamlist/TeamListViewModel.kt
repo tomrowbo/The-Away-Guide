@@ -21,15 +21,32 @@ constructor(
     var loadingState: MutableState<Boolean> = mutableStateOf(false)
 
     init {
-        getTeams()
+        getScreenInfo()
     }
 
-    private fun getTeams() {
+    private fun getScreenInfo() {
 
         viewModelScope.launch {
             loadingState.value = true
-            uiState.value = uiState.value.copy().apply { teamList = teamRepository.getAll() ?: emptyList() }
+            uiState.value = uiState.value.copy().apply {
+                teamList = teamRepository.retrieveTeams() ?: emptyList()
+                leagueList = teamRepository.getLeagues() ?: emptyList()
+            }
             loadingState.value = false
+        }
+    }
+
+    fun onAllTeamsClicked() {
+        uiState.value = uiState.value.copy().apply {
+            teamList = teamRepository.getAllTeams()
+            selectedLeague = "All Teams"
+        }
+    }
+
+    fun onLeagueClicked(leagueId: String, leagueName: String) {
+        uiState.value = uiState.value.copy().apply {
+            teamList = teamRepository.getTeamsByLeague(leagueId)
+            selectedLeague = leagueName
         }
     }
 }

@@ -2,6 +2,7 @@ package com.example.theawayguide.repository
 
 import com.example.theawayguide.BuildConfig
 import com.example.theawayguide.domain.Attraction
+import com.example.theawayguide.domain.League
 import com.example.theawayguide.domain.Team
 import com.example.theawayguide.network.FirebaseService
 import com.example.theawayguide.network.PlaceDTO
@@ -15,9 +16,12 @@ class TeamRepositoryImpl(
     private val retrofitService: RetrofitService
 ) : TeamRepository {
 
-    override suspend fun getAll(): List<Team> {
+    private var allTeams = emptyList<Team>()
+
+    override suspend fun retrieveTeams(): List<Team> {
         return withContext(Dispatchers.IO) {
-            firebaseService.getAllTeams()
+            allTeams = firebaseService.getAllTeams()
+            allTeams
         }
     }
 
@@ -94,6 +98,20 @@ class TeamRepositoryImpl(
             mapToAttraction(
                 it
             )
+        }
+    }
+
+    override fun getTeamsByLeague(leagueId: String): List<Team> {
+        return allTeams.filter { it.league == leagueId }
+    }
+
+    override fun getAllTeams(): List<Team> {
+        return allTeams
+    }
+
+    override suspend fun getLeagues(): List<League> {
+        return withContext(Dispatchers.IO) {
+            firebaseService.getLeagues()
         }
     }
 

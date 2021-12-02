@@ -12,7 +12,7 @@ private val DarkColorPalette = darkColors(
     primaryVariant = DarkGreen,
     onPrimary = Color.White,
     surface = GraySurface
-    )
+)
 
 private val LightColorPalette = lightColors(
     primary = DarkGreen,
