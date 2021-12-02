@@ -10,7 +10,6 @@ class FirebaseService constructor(
     private val database: FirebaseDatabase
 ) {
 
-
     fun getAllTeams(): List<Team> {
         val getTeamsTask = database.getReference("Teams").get()
         Tasks.await(getTeamsTask)
@@ -39,9 +38,9 @@ class FirebaseService constructor(
 
     private fun mapToLeague(leagueSnapshot: DataSnapshot): League {
         return League(
-            name = leagueSnapshot.value as String?,
+            name = leagueSnapshot.child("Name").value as String?,
+            badgeUrl = leagueSnapshot.child("BadgeURL").value as String?,
             id = leagueSnapshot.key
-
         )
     }
 

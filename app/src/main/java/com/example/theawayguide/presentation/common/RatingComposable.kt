@@ -18,38 +18,38 @@ fun RatingComposable(icons: List<ImageVector>, ratingAmount: Int?) {
             imageVector = icons[0],
             contentDescription = "Star",
             Modifier.size(16.dp),
-            tint = MaterialTheme.colors.onPrimary
+            tint = MaterialTheme.colors.onSurface
         )
         Icon(
             imageVector = icons[1],
             contentDescription = "Star",
             Modifier.size(16.dp),
-            tint = MaterialTheme.colors.onPrimary
+            tint = MaterialTheme.colors.onSurface
         )
         Icon(
             imageVector = icons[2],
             contentDescription = "Star",
             Modifier.size(16.dp),
-            tint = MaterialTheme.colors.onPrimary
+            tint = MaterialTheme.colors.onSurface
         )
         Icon(
             imageVector = icons[3],
             contentDescription = "Star",
             Modifier.size(16.dp),
-            tint = MaterialTheme.colors.onPrimary
+            tint = MaterialTheme.colors.onSurface
         )
         Icon(
             imageVector = icons[4],
             contentDescription = "Star",
             Modifier.size(16.dp),
-            tint = MaterialTheme.colors.onPrimary
+            tint = MaterialTheme.colors.onSurface
         )
         ratingAmount?.let {
             Text(
                 text = "($ratingAmount)",
                 style = MaterialTheme.typography.body2,
                 modifier = Modifier.padding(start = 4.dp),
-                color = MaterialTheme.colors.onPrimary
+                color = MaterialTheme.colors.onSurface
             )
         }
     }

@@ -36,14 +36,14 @@ constructor(
         }
     }
 
-    fun onAllTeamsClicked(){
+    fun onAllTeamsClicked() {
         uiState.value = uiState.value.copy().apply {
             teamList = teamRepository.getAllTeams()
             selectedLeague = "All Teams"
         }
     }
 
-    fun onLeagueClicked(leagueId: String, leagueName: String){
+    fun onLeagueClicked(leagueId: String, leagueName: String) {
         uiState.value = uiState.value.copy().apply {
             teamList = teamRepository.getTeamsByLeague(leagueId)
             selectedLeague = leagueName

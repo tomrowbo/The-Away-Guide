@@ -43,7 +43,7 @@ object AttractionDetailsComposable {
                 Column(
                     Modifier.padding(horizontal = 8.dp),
                 ) {
-                    Text(uiState.name ?: stringResource(R.string.attractionNamePlaceholder), style = MaterialTheme.typography.h2, color = MaterialTheme.colors.onPrimary)
+                    Text(uiState.name ?: stringResource(R.string.attractionNamePlaceholder), style = MaterialTheme.typography.h2, color = MaterialTheme.colors.onSurface)
                     RatingAndPriceRow(uiState.ratingIcons, uiState.totalRatings, uiState.priceLevel)
                 }
             }
@@ -71,9 +71,9 @@ object AttractionDetailsComposable {
     @Composable
     private fun OpeningHoursComposable(openingHours: List<String>?) {
         Column() {
-            Text(stringResource(R.string.openingHoursTitle), style = MaterialTheme.typography.subtitle1, color = MaterialTheme.colors.onPrimary)
+            Text(stringResource(R.string.openingHoursTitle), style = MaterialTheme.typography.subtitle1, color = MaterialTheme.colors.onSurface)
             openingHours?.forEach { dayInfo ->
-                Text(dayInfo, style = MaterialTheme.typography.body1, color = MaterialTheme.colors.onPrimary)
+                Text(dayInfo, style = MaterialTheme.typography.body1, color = MaterialTheme.colors.onSurface)
             }
         }
     }
@@ -88,9 +88,9 @@ object AttractionDetailsComposable {
                     modifier = Modifier
                         .size(24.dp)
                         .padding(end = 4.dp),
-                    tint = MaterialTheme.colors.onPrimary
+                    tint = MaterialTheme.colors.onSurface
                 )
-                Text(address, style = MaterialTheme.typography.body1, color = MaterialTheme.colors.onPrimary)
+                Text(address, style = MaterialTheme.typography.body1, color = MaterialTheme.colors.onSurface)
             }
         }
     }
@@ -105,9 +105,9 @@ object AttractionDetailsComposable {
                     modifier = Modifier
                         .size(24.dp)
                         .padding(end = 4.dp),
-                    tint = MaterialTheme.colors.onPrimary
+                    tint = MaterialTheme.colors.onSurface
                 )
-                Text(it, style = MaterialTheme.typography.body1, color = MaterialTheme.colors.onPrimary)
+                Text(it, style = MaterialTheme.typography.body1, color = MaterialTheme.colors.onSurface)
             }
         }
     }
@@ -122,7 +122,7 @@ object AttractionDetailsComposable {
             ratingIcons?.let { RatingComposable(icons = it, ratingAmount = totalRatings) }
             Text(
                 priceLevel ?: "",
-                color = MaterialTheme.colors.onPrimary,
+                color = MaterialTheme.colors.onSurface,
                 style = MaterialTheme.typography.body1
             )
         }

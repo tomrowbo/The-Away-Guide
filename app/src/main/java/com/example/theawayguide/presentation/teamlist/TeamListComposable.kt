@@ -1,8 +1,6 @@
 package com.example.theawayguide.presentation.teamlist
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,8 +12,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -43,7 +43,7 @@ object TeamListComposable {
                 Scaffold(
                     scaffoldState = scaffoldState,
                     drawerContent = {
-                        DrawerComposable(uiModel.value.leagueList, viewModel, toggleDrawer(scope, scaffoldState))
+                        DrawerComposable(uiModel.value.leagueList, viewModel, uiModel.value.selectedLeague)
                     },
                     topBar = {
                         TopAppBar(
@@ -126,7 +126,7 @@ object TeamListComposable {
     }
 
     @Composable
-    fun NavItemCard(icon: ImageVector, title: String, selected: Boolean, onItemClick: () -> Unit) {
+    fun NavItemCard(painter: Painter, title: String, selected: Boolean, onItemClick: () -> Unit) {
         val background =
             if (selected) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.surface
         Row(
@@ -140,12 +140,14 @@ object TeamListComposable {
                 .padding(start = 10.dp)
         ) {
             Image(
-                imageVector = icon,
+                painter = painter,
                 contentDescription = stringResource(R.string.leagueBadgeDescription),
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .height(35.dp)
                     .width(35.dp)
+                    .background(Color.White)
+                    .border(BorderStroke(1.dp, Color.Black))
             )
             Text(
                 text = title,
@@ -155,7 +157,11 @@ object TeamListComposable {
     }
 
     @Composable
-    fun DrawerComposable(leagueList: List<League>, viewModel: TeamListViewModel, toggleDrawer: Unit) {
+    fun DrawerComposable(
+        leagueList: List<League>,
+        viewModel: TeamListViewModel,
+        selectedLeague: String
+    ) {
         Column {
             Surface(modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colors.primary) {
                 Text(
@@ -165,27 +171,25 @@ object TeamListComposable {
                     modifier = Modifier.padding(bottom = 32.dp, top = 64.dp, start = 16.dp)
                 )
             }
-            LazyColumn{
+            LazyColumn {
                 item {
                     NavItemCard(
-                        Icons.Filled.Menu,
+                        painterResource(R.drawable.ic_baseline_format_list_bulleted_24),
                         stringResource(R.string.all_teams_title_text),
-                        selected = false
+                        selected = (selectedLeague == "All Teams")
                     ) {
                         viewModel.onAllTeamsClicked()
-                        toggleDrawer
                     }
                 }
-                items(leagueList){ league ->
+                items(leagueList) { league ->
                     if (league.id != null && league.name != null)
-                    NavItemCard(
-                        Icons.Filled.Menu,
-                        league.name,
-                        selected = false
-                    ) {
-                        viewModel.onLeagueClicked(league.id, league.name)
-                        toggleDrawer
-                    }
+                        NavItemCard(
+                            rememberImagePainter(league.badgeUrl),
+                            league.name,
+                            selected = (selectedLeague == league.name)
+                        ) {
+                            viewModel.onLeagueClicked(league.id, league.name)
+                        }
                 }
             }
         }
