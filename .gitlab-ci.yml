@@ -31,6 +31,7 @@ variables:
 # Packages installation before running script
 before_script:
   - touch local.properties
+  - echo "MAPS_API_KEY=mockAPIKey" > local.properties
   - apt-get --quiet update --yes
   - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1
 
