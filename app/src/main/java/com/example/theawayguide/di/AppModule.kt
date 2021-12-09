@@ -18,4 +18,10 @@ object AppModule {
     fun provideApplication(@ApplicationContext app: Context): BaseApplication {
         return app as BaseApplication
     }
+
+    @Provides
+    @Singleton
+    fun provideContext(application: BaseApplication): Context {
+        return application.applicationContext
+    }
 }

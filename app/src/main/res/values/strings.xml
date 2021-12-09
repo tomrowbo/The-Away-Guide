@@ -11,7 +11,6 @@
     <string name="pubs_tab_text">PUBS</string>
     <string name="restaurant_tab_text">RESTAURANTS</string>
     <string name="hotel_tab_text">HOTELS</string>
-    <string name="could_not_load_text">Could not load...</string>
     <string name="app_logo_description">App Logo</string>
     <string name="attractionNamePlaceholder">Attraction Name</string>
     <string name="openingHoursTitle">Opening Hours</string>

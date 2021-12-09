@@ -23,6 +23,7 @@ import coil.compose.rememberImagePainter
 import com.example.theawayguide.R
 import com.example.theawayguide.domain.League
 import com.example.theawayguide.domain.Team
+import com.example.theawayguide.presentation.common.ErrorComposable
 import com.example.theawayguide.presentation.common.SplashScreenComposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -34,7 +35,10 @@ object TeamListComposable {
     fun TeamListScreen(viewModel: TeamListViewModel, navController: NavController) {
         val uiModel = viewModel.uiState
         val isLoading = viewModel.loadingState.value
-        if (isLoading) {
+        val isError = viewModel.errorState.value
+        if (isError) {
+            ErrorComposable { viewModel.retry() }
+        } else if (isLoading) {
             SplashScreenComposable()
         } else {
             Surface(color = MaterialTheme.colors.background) {

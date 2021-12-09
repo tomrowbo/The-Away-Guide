@@ -119,18 +119,14 @@ class TeamRepositoryImplTest {
                 imageUrl = PHOTO_REFERENCE,
                 address = VICINITY,
                 rating = RATING,
-                placeId = "",
                 totalRatings = TOTAL_RATINGS,
-                priceLevel = PRICE_LEVEL
             ),
             Attraction(
                 name = PLACE_NAME,
                 imageUrl = PHOTO_REFERENCE,
                 address = VICINITY,
                 rating = RATING,
-                placeId = "",
                 totalRatings = TOTAL_RATINGS,
-                priceLevel = PRICE_LEVEL
             )
         )
     }

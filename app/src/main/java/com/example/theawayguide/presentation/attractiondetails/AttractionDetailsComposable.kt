@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.theawayguide.R
+import com.example.theawayguide.presentation.common.ErrorComposable
+import com.example.theawayguide.presentation.common.LoadingComposable
 import com.example.theawayguide.presentation.common.RatingComposable
 
 object AttractionDetailsComposable {
@@ -23,9 +25,16 @@ object AttractionDetailsComposable {
     @Composable
     fun AttractionScreen(attractionDetailsViewModel: AttractionDetailsViewModel, navController: NavController) {
         val uiState = attractionDetailsViewModel.uiState.value
-        val isLoading = attractionDetailsViewModel.loadingState
-
-        ContentComposable(uiState, navController)
+        val isLoading = attractionDetailsViewModel.loadingState.value
+        val isError = attractionDetailsViewModel.errorState.value
+        if (isLoading) {
+            LoadingComposable()
+        } else {
+            if (!isError) {
+                ContentComposable(uiState, navController)
+            } else
+                ErrorComposable { attractionDetailsViewModel.retry() }
+        }
     }
 
     @Composable

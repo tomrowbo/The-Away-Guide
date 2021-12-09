@@ -2,6 +2,7 @@ package com.example.theawayguide.presentation.teamlist
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.theawayguide.repository.TeamRepository
@@ -20,20 +21,31 @@ constructor(
 
     var loadingState: MutableState<Boolean> = mutableStateOf(false)
 
+    var errorState: MutableState<Boolean> = mutableStateOf(false)
+
     init {
         getScreenInfo()
     }
 
     private fun getScreenInfo() {
-
         viewModelScope.launch {
-            loadingState.value = true
-            uiState.value = uiState.value.copy().apply {
-                teamList = teamRepository.retrieveTeams() ?: emptyList()
-                leagueList = teamRepository.getLeagues() ?: emptyList()
+            try {
+                loadingState.value = true
+                uiState.value = uiState.value.copy().apply {
+                    teamList = teamRepository.retrieveTeams() ?: emptyList()
+                    leagueList = teamRepository.getLeagues() ?: emptyList()
+                }
+                loadingState.value = false
+            } catch (e: Exception) {
+                errorState.value = true
+                loadingState.value = false
             }
-            loadingState.value = false
         }
+    }
+
+    fun retry() {
+        errorState.value = false
+        getScreenInfo()
     }
 
     fun onAllTeamsClicked() {

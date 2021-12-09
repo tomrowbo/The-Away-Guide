@@ -19,7 +19,6 @@ class FirebaseService constructor(
     }
 
     fun getTeamDetails(teamUrl: String): Team {
-        val database = FirebaseDatabase.getInstance()
         val getTeamTask = database.getReference("Teams").child(teamUrl).get()
         val getTeamFurtherInfoTask = database.getReference("TeamDetails").child(teamUrl).get()
         Tasks.await(getTeamTask)
@@ -28,7 +27,6 @@ class FirebaseService constructor(
     }
 
     fun getLeagues(): List<League> {
-        val database = FirebaseDatabase.getInstance()
         val getLeaguesTask = database.getReference("Leagues").get()
         Tasks.await(getLeaguesTask)
         return getLeaguesTask.result.children.map { league ->
