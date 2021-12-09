@@ -42,11 +42,14 @@ constructor(
 
     private fun getScreenInfo() {
         viewModelScope.launch {
-            loadingState.value = true
-
-            uiState.value = mapToAttractionUiState(placeId ?: "")
-
-            loadingState.value = false
+            try {
+                loadingState.value = true
+                uiState.value = mapToAttractionUiState(placeId ?: "")
+                loadingState.value = false
+            } catch (e: Exception) {
+                errorState.value = true
+                loadingState.value = false
+            }
         }
     }
 

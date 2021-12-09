@@ -2,15 +2,15 @@ package com.example.theawayguide.di
 
 import android.content.Context
 import com.example.theawayguide.network.FirebaseService
-import com.example.theawayguide.network.NetworkConnectionInterceptor
 import com.example.theawayguide.network.RetrofitService
+import com.example.theawayguide.network.hasNetwork
 import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -41,15 +41,19 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(networkConnectionInterceptor: NetworkConnectionInterceptor): OkHttpClient {
+    fun provideOkHttpClient(context: Context): OkHttpClient {
+        val cacheSize = (50 * 1024 * 1024).toLong() //50MiB - $0.05 worth of phone storage
+        val cache = Cache(context.cacheDir, cacheSize)
         return OkHttpClient.Builder()
-            .addInterceptor(networkConnectionInterceptor)
+            .cache(cache)
+            .addInterceptor { chain ->
+                var request = chain.request()
+                request = if (hasNetwork(context)!!)
+                    request.newBuilder().header("Cache-Control", "public, max-age=" + 5).build()
+                else
+                    request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 30).build()
+                chain.proceed(request)
+            }
             .build()
-    }
-
-    @Singleton
-    @Provides
-    fun provideNetworkConnectionInterceptor(context: Context): Interceptor {
-        return NetworkConnectionInterceptor(context)
     }
 }
