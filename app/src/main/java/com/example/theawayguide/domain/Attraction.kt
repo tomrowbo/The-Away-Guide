@@ -5,7 +5,7 @@ data class Attraction(
     val imageUrl: String? = "",
     val address: String? = "",
     val rating: Double? = null,
-    val placeId: String? = "",
+    val placeId: String? = null,
     val totalRatings: Int? = null,
     val priceLevel: Int? = null,
     val phoneNumber: String? = "",

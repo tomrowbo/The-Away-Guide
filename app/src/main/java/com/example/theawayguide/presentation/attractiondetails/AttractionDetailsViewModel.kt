@@ -29,19 +29,27 @@ constructor(
 
     var loadingState: MutableState<Boolean> = mutableStateOf(false)
 
+    var errorState: MutableState<Boolean> = mutableStateOf(false)
+
+    var placeId: String? = null
+
     init {
-        savedStateHandle.get<String>("attractionId")?.let { placeId ->
-            getScreenInfo(placeId)
+        savedStateHandle.get<String>("attractionId")?.let {
+            placeId = it
+            getScreenInfo()
         }
     }
 
-    private fun getScreenInfo(placeId: String) {
+    private fun getScreenInfo() {
         viewModelScope.launch {
-            loadingState.value = true
-
-            uiState.value = mapToAttractionUiState(placeId)
-
-            loadingState.value = false
+            try {
+                loadingState.value = true
+                uiState.value = mapToAttractionUiState(placeId ?: "")
+                loadingState.value = false
+            } catch (e: Exception) {
+                errorState.value = true
+                loadingState.value = false
+            }
         }
     }
 
@@ -61,6 +69,7 @@ constructor(
                 priceLevel = mapPriceLevel(attraction.priceLevel)
             )
         }
+        errorState.value = true
         return AttractionDetailsUiState()
     }
 
@@ -97,5 +106,10 @@ constructor(
             "photo?maxwidth=3840&" +
             "photo_reference=$imageUrl" +
             "&key=${BuildConfig.MAPS_API_KEY}"
+    }
+
+    fun retry() {
+        errorState.value = false
+        getScreenInfo()
     }
 }

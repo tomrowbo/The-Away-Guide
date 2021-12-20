@@ -1,5 +1,6 @@
 package com.example.theawayguide.repository
 
+import androidx.annotation.VisibleForTesting
 import com.example.theawayguide.BuildConfig
 import com.example.theawayguide.domain.Attraction
 import com.example.theawayguide.domain.League
@@ -16,13 +17,19 @@ class TeamRepositoryImpl(
     private val retrofitService: RetrofitService
 ) : TeamRepository {
 
-    private var allTeams = emptyList<Team>()
+    @VisibleForTesting
+    internal var allTeams = emptyList<Team>()
 
     override suspend fun retrieveTeams(): List<Team> {
-        return withContext(Dispatchers.IO) {
-            allTeams = firebaseService.getAllTeams()
-            allTeams
+        try {
+            return withContext(Dispatchers.IO) {
+                allTeams = firebaseService.getAllTeams()
+                allTeams
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+        return emptyList()
     }
 
     override suspend fun getTeamDetails(url: String): Team {

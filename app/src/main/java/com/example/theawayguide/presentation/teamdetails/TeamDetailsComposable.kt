@@ -59,7 +59,7 @@ object TeamDetailsComposable {
                     if (team != null) {
                         ContentComposable(team, pubList, restaurantList, hotelList, navController)
                     } else
-                        ErrorComposable(errorMsg = "Team not found")
+                        ErrorComposable { viewModel.retry() }
                 }
             }
         }
@@ -118,10 +118,6 @@ object TeamDetailsComposable {
                         placeId = hotel.placeId
                     )
                 }
-            } else {
-                item {
-                    ErrorComposable(stringResource(R.string.could_not_load_text))
-                }
             }
         }
     }
@@ -145,10 +141,6 @@ object TeamDetailsComposable {
                         placeId = restaurant.placeId
                     )
                 }
-            } else {
-                item {
-                    ErrorComposable(stringResource(R.string.could_not_load_text))
-                }
             }
         }
     }
@@ -168,10 +160,6 @@ object TeamDetailsComposable {
                         navController = navController,
                         placeId = pub.placeId
                     )
-                }
-            } else {
-                item {
-                    ErrorComposable(stringResource(R.string.could_not_load_text))
                 }
             }
         }

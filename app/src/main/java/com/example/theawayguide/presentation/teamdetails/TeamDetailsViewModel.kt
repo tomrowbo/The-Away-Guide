@@ -30,36 +30,52 @@ constructor(
 
     var loadingState: MutableState<Boolean> = mutableStateOf(false)
 
+    var errorState: MutableState<Boolean> = mutableStateOf(false)
+
+    var teamUrl: String? = null
+
     init {
-        savedStateHandle.get<String>("teamUrl")?.let { teamUrl ->
-            getScreenInfo(teamUrl)
+        savedStateHandle.get<String>("teamUrl")?.let { url ->
+            teamUrl = url
+            getScreenInfo()
         }
     }
 
-    private fun getScreenInfo(teamUrl: String) {
+    private fun getScreenInfo() {
         viewModelScope.launch {
             loadingState.value = true
+            try {
+                val team = teamUrl?.let { teamRepository.getTeamDetails(it) }
+                var pubList: List<AttractionSummaryUiState>? = null
+                var restaurantList: List<AttractionSummaryUiState>? = null
+                var hotelList: List<AttractionSummaryUiState>? = null
 
-            val team = teamRepository.getTeamDetails(teamUrl)
-            var pubList: List<AttractionSummaryUiState>? = null
-            var restaurantList: List<AttractionSummaryUiState>? = null
-            var hotelList: List<AttractionSummaryUiState>? = null
+                if (team != null) {
+                    if (team.mapsLatitude != null && team.mapsLongitude != null) {
+                        hotelList = getHotels(team.mapsLatitude, team.mapsLongitude)
+                        pubList = getPubs(team.mapsLatitude, team.mapsLongitude)
+                        restaurantList = getRestaurants(team.mapsLatitude, team.mapsLongitude)
+                    }
+                }
 
-            if (team.mapsLatitude != null && team.mapsLongitude != null) {
-                hotelList = getHotels(team.mapsLatitude, team.mapsLongitude)
-                pubList = getPubs(team.mapsLatitude, team.mapsLongitude)
-                restaurantList = getRestaurants(team.mapsLatitude, team.mapsLongitude)
+                uiState.value = TeamDetailsUiState(
+                    team = team,
+                    pubList = pubList,
+                    hotelList = hotelList,
+                    restaurantList = restaurantList
+                )
+
+                loadingState.value = false
+            } catch (e: Exception) {
+                errorState.value = true
+                loadingState.value = false
             }
-
-            uiState.value = TeamDetailsUiState(
-                team = team,
-                pubList = pubList,
-                hotelList = hotelList,
-                restaurantList = restaurantList
-            )
-
-            loadingState.value = false
         }
+    }
+
+    fun retry() {
+        errorState.value = false
+        getScreenInfo()
     }
 
     private suspend fun getHotels(mapsLatitude: Double, mapsLongitude: Double): List<AttractionSummaryUiState>? {
