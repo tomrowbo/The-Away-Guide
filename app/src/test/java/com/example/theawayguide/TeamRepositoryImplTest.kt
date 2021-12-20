@@ -1,6 +1,7 @@
 package com.example.theawayguide
 
 import com.example.theawayguide.domain.Attraction
+import com.example.theawayguide.domain.Team
 import com.example.theawayguide.network.*
 import com.example.theawayguide.repository.TeamRepositoryImpl
 import io.mockk.*
@@ -87,6 +88,20 @@ class TeamRepositoryImplTest {
 
             // THEN
             assertEquals(attractions, getMockAttractionsList())
+        }
+    }
+
+    @Test
+    fun WHEN_filterTeams_THEN_returnFilteredTeams() {
+        runBlocking {
+            // GIVEN
+            teamRepositoryImpl.allTeams = listOf(Team(name = "1", league = "EPL"), Team(name = "2", league = "League 2"), Team(name = "3", league = "EPL"), Team(name = "4", league = "League One"))
+
+            // WHEN
+            val teams = teamRepositoryImpl.getTeamsByLeague("EPL")
+
+            // THEN
+            assertEquals(teams, listOf(Team(name = "1", league = "EPL"), Team(name = "3", league = "EPL")))
         }
     }
 

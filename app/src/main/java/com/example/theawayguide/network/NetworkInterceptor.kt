@@ -1,8 +1,8 @@
 package com.example.theawayguide.network
 
 import android.content.Context
-import android.net.NetworkInfo
 import android.net.ConnectivityManager
+import android.net.NetworkInfo
 
 fun hasNetwork(context: Context): Boolean? {
     var isConnected: Boolean? = false // Initial Value

@@ -42,7 +42,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideOkHttpClient(context: Context): OkHttpClient {
-        val cacheSize = (50 * 1024 * 1024).toLong() //50MiB - $0.05 worth of phone storage
+        val cacheSize = (50 * 1024 * 1024).toLong() // 50MiB - $0.05 worth of phone storage
         val cache = Cache(context.cacheDir, cacheSize)
         return OkHttpClient.Builder()
             .cache(cache)
