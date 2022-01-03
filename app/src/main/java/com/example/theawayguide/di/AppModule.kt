@@ -1,6 +1,8 @@
 package com.example.theawayguide.di
 
 import android.content.Context
+import android.content.SharedPreferences
+import com.example.theawayguide.R
 import com.example.theawayguide.presentation.BaseApplication
 import dagger.Module
 import dagger.Provides
@@ -23,5 +25,11 @@ object AppModule {
     @Singleton
     fun provideContext(application: BaseApplication): Context {
         return application.applicationContext
+    }
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(application: BaseApplication, context: Context): SharedPreferences? {
+        return application.getSharedPreferences(context.getString(R.string.prefence_key), Context.MODE_PRIVATE)
     }
 }

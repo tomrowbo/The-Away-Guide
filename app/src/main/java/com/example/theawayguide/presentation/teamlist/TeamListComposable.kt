@@ -47,7 +47,7 @@ object TeamListComposable {
                 Scaffold(
                     scaffoldState = scaffoldState,
                     drawerContent = {
-                        DrawerComposable(uiModel.value.leagueList, viewModel, uiModel.value.selectedLeague)
+                        DrawerComposable(uiModel.value.leagueList, viewModel, uiModel.value.selectedLeague, navController)
                     },
                     topBar = {
                         TopAppBar(
@@ -164,7 +164,8 @@ object TeamListComposable {
     fun DrawerComposable(
         leagueList: List<League>,
         viewModel: TeamListViewModel,
-        selectedLeague: String
+        selectedLeague: String,
+        navController: NavController
     ) {
         Column {
             Surface(modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colors.primary) {
@@ -194,6 +195,15 @@ object TeamListComposable {
                         ) {
                             viewModel.onLeagueClicked(league.id, league.name)
                         }
+                }
+                item {
+                    NavItemCard(
+                        painterResource(R.drawable.ic_baseline_settings_24),
+                        stringResource(R.string.settings_text),
+                        selected = false
+                    ) {
+                        navController.navigate("settings")
+                    }
                 }
             }
         }
