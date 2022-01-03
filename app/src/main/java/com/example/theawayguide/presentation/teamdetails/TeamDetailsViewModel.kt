@@ -1,5 +1,7 @@
 package com.example.theawayguide.presentation.teamdetails
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarBorder
@@ -10,20 +12,21 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.theawayguide.BuildConfig
+import com.example.theawayguide.R
 import com.example.theawayguide.domain.Attraction
 import com.example.theawayguide.repository.TeamRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
-const val RADIUS = 1500
-
 @HiltViewModel
 class TeamDetailsViewModel
 @Inject
 constructor(
     private val teamRepository: TeamRepository,
-    savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val sharedPreferences: SharedPreferences?,
+    private val context: Context // Mitigated warning in IDE
 ) : ViewModel() {
 
     var uiState: MutableState<TeamDetailsUiState> = mutableStateOf(TeamDetailsUiState())
@@ -33,6 +36,8 @@ constructor(
     var errorState: MutableState<Boolean> = mutableStateOf(false)
 
     var teamUrl: String? = null
+
+    var radius: Int = context.resources.getInteger(R.integer.default_attraction_distance)
 
     init {
         savedStateHandle.get<String>("teamUrl")?.let { url ->
@@ -44,6 +49,7 @@ constructor(
     private fun getScreenInfo() {
         viewModelScope.launch {
             loadingState.value = true
+            radius = sharedPreferences?.getInt(context.getString(R.string.attraction_distance_radius_key), context.resources.getInteger(R.integer.default_attraction_distance)) ?: context.resources.getInteger(R.integer.default_attraction_distance)
             try {
                 val team = teamUrl?.let { teamRepository.getTeamDetails(it) }
                 var pubList: List<AttractionSummaryUiState>? = null
@@ -82,7 +88,7 @@ constructor(
         return teamRepository.getHotels(
             mapsLatitude,
             mapsLongitude,
-            RADIUS
+            radius
         )?.map { attraction ->
             mapToAttractionUiModel(attraction)
         }
@@ -92,7 +98,7 @@ constructor(
         return teamRepository.getPubs(
             mapsLatitude,
             mapsLongitude,
-            RADIUS
+            radius
         )?.map { attraction ->
             mapToAttractionUiModel(attraction)
         }
@@ -102,7 +108,7 @@ constructor(
         return teamRepository.getRestaurants(
             mapsLatitude,
             mapsLongitude,
-            RADIUS
+            radius
         )?.map { attraction ->
             mapToAttractionUiModel(attraction)
         }

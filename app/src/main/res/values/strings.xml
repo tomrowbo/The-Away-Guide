@@ -18,4 +18,7 @@
     <string name="phoneIconDescription">Phone Icon</string>
     <string name="attractionImageDescription">Attraction Image</string>
     <string name="leagueBadgeDescription">League Badge</string>
+    <string name="prefence_key">preference_key</string>
+    <string name="attraction_distance_radius_key">attraction_distance_radius_key</string>
+    <string name="settings_text">Settings</string>
 </resources>

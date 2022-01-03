@@ -12,6 +12,8 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.example.theawayguide.R
 import com.google.android.libraries.maps.MapView
 
+// Code adapted from
+// https://medium.com/geekculture/google-maps-in-jetpack-compose-android-ae7b1ad84e9
 @Composable
 fun rememberMapViewWithLifecycle(): MapView {
     val context = LocalContext.current
@@ -46,3 +48,5 @@ private fun getMapLifecycleObserver(mapView: MapView): LifecycleEventObserver =
             else -> throw IllegalStateException()
         }
     }
+
+// End of reference
