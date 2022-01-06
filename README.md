@@ -11,38 +11,38 @@
 1. The device is over API 23 and has Google Services installed
    
 ## Requirements
-Requirement 	     Achieved?
-[X] Show a list of football grounds (MVP) as this is part of the core functionality and is necessary to allow the user to select the football ground they want to look at.
-[X] Include a map with a pinpoint of the football stadium’s location. This is so that users can easily locate the stadium
-[ ] Add the functionality to group by, filter and search football grounds. This will make it easier for the user to find their football team.	Partly – Filter by league
-[X] Include a description about each football ground listed (MVP). This is part of the core functionality and will give the user a nonvisual way of developing the stadiums narrative.	
-[X] Include a list of restaurants located near each football ground listed (MVP). This will assist users when they arrive at the ground as they will likely need to eat lunch/dinner.
-[X] Include a list of pubs located near each football ground listed (MVP). A lot of football supporters enjoy drinking before/after the football match and will likely want to find pubs close by. 
-[X] Include a list of hotels located near each football ground listed (MVP). For those football fans that travel a long distance – they may not want to travel back home the same day and will therefore require a nearby hotel.	
-[ ] Include a list of car parking located near each football ground listed. Supporters will be travelling to these football matches, and many will use their cars – and will need to park nearby to the stadium.
-[ ] Include a map with a pinpoint of each of the restaurants, pubs and hotels listed. This is so that the user can easily find the attraction they want to find.	Address is provided
-[ ] Include the ability to add reviews to football grounds and display other users’ reviews. This is so that the user can get an understanding on how good the attraction is. This will increase user trust of an attraction, as a study found with KRC Research and Weber Shandwick stated that 65% of consumers “have been inspired enough by a favorable consumer review to buy a CE product that they weren’t considering” (2013).
-[ ] Have certain restaurants/pubs/hotels promoted in their lists. This is to give the application can get an income.
-[ ] Allow the user to select favourite grounds which appear on the home page. This is for ease of use and to allow the user to find their football ground easier.
-[ ] Show the users recently viewed football grounds on the home page. This is for ease of use and to allow the user to find their football ground easier.
-[X] Each football club will be shown with their associated logo (MVP). This is to make finding their football club easier.
-[X] At least one picture of the ground will be provided (MVP) - to give the user an easier user experience and give images so that the user can recognise the football ground once arrived.
-[X] Pictures of the local pubs will be shown (MVP) – to give the user an easier user experience and give images so that the user can recognise the football ground once arrived and also increase the customers engagement – as proven by Sabate et Al. (2014) in a study of Spanish travel agencies Facebook pages, where pictures had a positive impact on post popularity.
-[X] Pictures of the local hotels/restaurants will be shown to give the user an easier user experience and give images so that the user can recognise the football ground once arrived.
-[X] The app will support Android API 21 and all higher versions – so that the majority of devices can access the application (94.1%+ of devices) (Rahman, 2020).
-[X] Include a dark theme option. This will make the app more power efficient, more visible to users with low vision or sensitive to bright light and easier for people to use in a low light environment (Dark theme  |  Android Developers, 2021).
-[X] Each page to load within 5 seconds – so that users don’t get frustrated and quit the application. This is important as a case study found that with Google, a 500-millisecond slowdown equalled a 25% decrease in searches (Everts, 2016 Chapter 2).
-[X] The applications services must all maintain high uptimes. This is vital to keep customers using my application as a survey found that 82% of customers have stopped using a service due to a poor customer experience (Mansfield, 2021) and would also result in lost revenue – as showcased by Amazon in 2013, each minute of downtime - $117,882 of sales volume was lost (Everts, 2016 Chapter 2).
-[X] The application should run without any unhandled errors and crashes (No known errors)
-[X] The app must be user-friendly and easy to use.
-[X] The application must follow a consistent green theme to match the branding.
-[X] A list of football teams with included description and location (MVP) – this will be coded into a cloud database using Firebase and is needed to provide the basic functionality of the app. I will also store some of this data locally using RoomDB (not part of MVP). The descriptions will be copied from Wikipedia or a similar site in this edition of the application.	X (Offline caching using different libraries)
-[X] A list of restaurants located near each football ground (MVP) – this will be retrieved from Google Maps API and is needed as it is a useful feature that users can find local restaurants. I will also be running a real-time database on Firebase which will store promoted restaurants (Not part of the MVP)	Partly (MVP achieved)
-[X] A list of hotels located near each football ground this will be retrieved from Google Maps API and is needed as it is a useful feature that users can find local hotels (MVP). I will also be running a real-time database on Firebase which will store promoted hotels (Not part of the MVP)	Partly (MVP achieved)
-[X] A list of pubs located near each football ground (MVP) this will be retrieved from Google Maps API and is needed as it is a useful feature that users can find local pubs. I will also be running a real-time database on Firebase which will store promoted pubs (Not part of MVP)	Partly (MVP achieved)
-[ ] A list of car parks located near each football ground this will be retrieved from Google Maps API and is needed as it is a useful feature that users can find local car parks
-[ ] A list of the user’s favourite football grounds. This will be stored locally in RoomDB and will be used for ease of access in the application.
-[ ] A list of the user’s recently viewed football grounds. This will be stored locally in RoomDB and will be used for ease of access in the application.
+Requirement
+- [X] Show a list of football grounds (MVP) as this is part of the core functionality and is necessary to allow the user to select the football ground they want to look at.
+- [X] Include a map with a pinpoint of the football stadium’s location. This is so that users can easily locate the stadium
+- [ ] Add the functionality to group by, filter and search football grounds. This will make it easier for the user to find their football team.	Partly – Filter by league
+- [X] Include a description about each football ground listed (MVP). This is part of the core functionality and will give the user a nonvisual way of developing the stadiums narrative.	
+- [X] Include a list of restaurants located near each football ground listed (MVP). This will assist users when they arrive at the ground as they will likely need to eat lunch/dinner.
+- [X] Include a list of pubs located near each football ground listed (MVP). A lot of football supporters enjoy drinking before/after the football match and will likely want to find pubs close by. 
+- [X] Include a list of hotels located near each football ground listed (MVP). For those football fans that travel a long distance – they may not want to travel back home the same day and will therefore require a nearby hotel.	
+- [ ] Include a list of car parking located near each football ground listed. Supporters will be travelling to these football matches, and many will use their cars – and will need to park nearby to the stadium.
+- [ ] Include a map with a pinpoint of each of the restaurants, pubs and hotels listed. This is so that the user can easily find the attraction they want to find.	Address is provided
+- [ ] Include the ability to add reviews to football grounds and display other users’ reviews. This is so that the user can get an understanding on how good the attraction is. This will increase user trust of an attraction, as a study found with KRC Research and Weber Shandwick stated that 65% of consumers “have been inspired enough by a favorable consumer review to buy a CE product that they weren’t considering” (2013).
+- [ ] Have certain restaurants/pubs/hotels promoted in their lists. This is to give the application can get an income.
+- [ ] Allow the user to select favourite grounds which appear on the home page. This is for ease of use and to allow the user to find their football ground easier.
+- [ ] Show the users recently viewed football grounds on the home page. This is for ease of use and to allow the user to find their football ground easier.
+- [X] Each football club will be shown with their associated logo (MVP). This is to make finding their football club easier.
+- [X] At least one picture of the ground will be provided (MVP) - to give the user an easier user experience and give images so that the user can recognise the football ground once arrived.
+- [X] Pictures of the local pubs will be shown (MVP) – to give the user an easier user experience and give images so that the user can recognise the football ground once arrived and also increase the customers engagement – as proven by Sabate et Al. (2014) in a study of Spanish travel agencies Facebook pages, where pictures had a positive impact on post popularity.
+- [X] Pictures of the local hotels/restaurants will be shown to give the user an easier user experience and give images so that the user can recognise the football ground once arrived.
+- [X] The app will support Android API 21 and all higher versions – so that the majority of devices can access the application (94.1%+ of devices) (Rahman, 2020).
+- [X] Include a dark theme option. This will make the app more power efficient, more visible to users with low vision or sensitive to bright light and easier for people to use in a low light environment (Dark theme  |  Android Developers, 2021).
+- [X] Each page to load within 5 seconds – so that users don’t get frustrated and quit the application. This is important as a case study found that with Google, a 500-millisecond slowdown equalled a 25% decrease in searches (Everts, 2016 Chapter 2).
+- [X] The applications services must all maintain high uptimes. This is vital to keep customers using my application as a survey found that 82% of customers have stopped using a service due to a poor customer experience (Mansfield, 2021) and would also result in lost revenue – as showcased by Amazon in 2013, each minute of downtime - $117,882 of sales volume was lost (Everts, 2016 Chapter 2).
+- [X] The application should run without any unhandled errors and crashes (No known errors)
+- [X] The app must be user-friendly and easy to use.
+- [X] The application must follow a consistent green theme to match the branding.
+- [X] A list of football teams with included description and location (MVP) – this will be coded into a cloud database using Firebase and is needed to provide the basic functionality of the app. I will also store some of this data locally using RoomDB (not part of MVP). The descriptions will be copied from Wikipedia or a similar site in this edition of the application.	X (Offline caching using different libraries)
+- [X] A list of restaurants located near each football ground (MVP) – this will be retrieved from Google Maps API and is needed as it is a useful feature that users can find local restaurants. I will also be running a real-time database on Firebase which will store promoted restaurants (Not part of the MVP)	Partly (MVP achieved)
+- [X] A list of hotels located near each football ground this will be retrieved from Google Maps API and is needed as it is a useful feature that users can find local hotels (MVP). I will also be running a real-time database on Firebase which will store promoted hotels (Not part of the MVP)	Partly (MVP achieved)
+- [X] A list of pubs located near each football ground (MVP) this will be retrieved from Google Maps API and is needed as it is a useful feature that users can find local pubs. I will also be running a real-time database on Firebase which will store promoted pubs (Not part of MVP)	Partly (MVP achieved)
+- [ ] A list of car parks located near each football ground this will be retrieved from Google Maps API and is needed as it is a useful feature that users can find local car parks
+- [ ] A list of the user’s favourite football grounds. This will be stored locally in RoomDB and will be used for ease of access in the application.
+- [ ] A list of the user’s recently viewed football grounds. This will be stored locally in RoomDB and will be used for ease of access in the application.
 
 
 ## Frameworks, Libraries and Languages Used
