@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">The Away Guide</string>
+    <string name="menu_button_description">Menu Button</string>
+    <string name="team_name_placeholder_text">Team Name</string>
+    <string name="stadium_name_placeholder_text">Stadium Name</string>
+    <string name="all_teams_title_text">All Teams</string>
+    <string name="settings_title_text">Settings</string>
+    <string name="loading_composable_text">Loading...</string>
+    <string name="overview_tab_text">OVERVIEW</string>
+    <string name="location_tab_text">LOCATION</string>
+    <string name="pubs_tab_text">PUBS</string>
+    <string name="restaurant_tab_text">RESTAURANTS</string>
+    <string name="hotel_tab_text">HOTELS</string>
+    <string name="app_logo_description">App Logo</string>
+    <string name="attractionNamePlaceholder">Attraction Name</string>
+    <string name="openingHoursTitle">Opening Hours</string>
+    <string name="mapIconDescription">Map Icon</string>
+    <string name="phoneIconDescription">Phone Icon</string>
+    <string name="attractionImageDescription">Attraction Image</string>
+    <string name="leagueBadgeDescription">League Badge</string>
+    <string name="prefence_key">preference_key</string>
+    <string name="attraction_distance_radius_key">attraction_distance_radius_key</string>
+    <string name="settings_text">Settings</string>
 </resources>
