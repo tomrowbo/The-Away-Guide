@@ -69,3 +69,14 @@ https://miro.com/app/board/uXjVOZGBehk=/
 4. Go through each of the top tabs making sure the description, maps and pubs appear
 5. On the pubs tab select a pub
 6. Verify the information on that screen
+
+## Screenshots
+![image](https://user-images.githubusercontent.com/43788394/155194666-2e75272d-65b9-43d7-bff0-11b728c503de.png)
+![image](https://user-images.githubusercontent.com/43788394/155194693-5e30b112-f0ee-4d82-ac5d-56ffbcff350c.png)
+![image](https://user-images.githubusercontent.com/43788394/155194711-789c14fb-9e7a-429d-b882-a8ff934449b0.png)
+![image](https://user-images.githubusercontent.com/43788394/155194734-41b2a764-9b91-4667-b406-348a3526c455.png)
+![image](https://user-images.githubusercontent.com/43788394/155194775-9b483ef7-bf81-4747-b5eb-4a908ec7514f.png)
+![image](https://user-images.githubusercontent.com/43788394/155194790-251c3544-7c6c-41cf-8b4e-76f81c8940ef.png)
+
+
+
